@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- .NET Framework 4.8 zit in Windows 10/11: het programma is één klein .exe-bestand, niets te installeren. -->
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net48</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>Kerstlampjes</AssemblyName>
+    <RootNamespace>Kerstlampjes</RootNamespace>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>kerstlampjes.ico</ApplicationIcon>
+    <Version>1.0.0</Version>
+    <Company>Kerstlampjes</Company>
+    <Product>Kerstlampjes</Product>
+    <Copyright>MIT - https://github.com/ericbruggema/kerstlampjes</Copyright>
+    <DebugType>none</DebugType>
+    <Deterministic>true</Deterministic>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Drawing" />
+  </ItemGroup>
+
+</Project>
