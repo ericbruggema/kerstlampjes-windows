@@ -27,6 +27,7 @@ namespace Kerstlampjes
         public bool ShowLights = true;
         public bool Sound = false;
         public bool SnowFull = false;       // sneeuw over het hele scherm (anders alleen aan de zijkanten)
+        public int BulbStyle = 0;           // soort lampjes, zie BulbStyles
         public int FireShow = 0;            // zie FireShows
         public bool DesktopOnly = false;    // alleen op het bureaublad, niet boven programma's
         public string Marquee = "";         // tekst van de lichtkrant (leeg = standaardtekst)
@@ -82,6 +83,7 @@ namespace Kerstlampjes
                         case "sound": s.Sound = v == "1"; break;
                         case "desktoponly": s.DesktopOnly = v == "1"; break;
                         case "snowfull": s.SnowFull = v == "1"; break;
+                        case "bulbstyle": s.BulbStyle = Clamp(v, 0, BulbStyles.Mix, s.BulbStyle); break;
                         case "fireshow": s.FireShow = Clamp(v, 0, FireShows.Names.Length - 1, s.FireShow); break;
                         case "marquee": s.Marquee = v.Length > 80 ? v.Substring(0, 80) : v; break;
                     }
@@ -104,7 +106,7 @@ namespace Kerstlampjes
                     "hidefullscreen=" + (HideFullscreen ? 1 : 0), "decor=" + DecorMask,
                     "trainside=" + (TrainSide ? 1 : 0), "wagons=" + TrainWagons, "trainlights=" + (TrainLights ? 1 : 0),
                     "garlandballs=" + (GarlandBalls ? 1 : 0), "showlights=" + (ShowLights ? 1 : 0),
-                    "sound=" + (Sound ? 1 : 0), "desktoponly=" + (DesktopOnly ? 1 : 0), "fireshow=" + FireShow, "snowfull=" + (SnowFull ? 1 : 0), "marquee=" + (Marquee ?? "").Replace('\r', ' ').Replace('\n', ' ')
+                    "sound=" + (Sound ? 1 : 0), "desktoponly=" + (DesktopOnly ? 1 : 0), "fireshow=" + FireShow, "bulbstyle=" + BulbStyle, "snowfull=" + (SnowFull ? 1 : 0), "marquee=" + (Marquee ?? "").Replace('\r', ' ').Replace('\n', ' ')
                 });
             }
             catch { /* niet kunnen opslaan is niet erg */ }
@@ -117,6 +119,17 @@ namespace Kerstlampjes
         public const int Count = 6;
         public static readonly string[] Names =
             { "Vast aan", "Fonkelen", "Om en om knipperen", "Lopend licht", "Kleurgolf", "Op de muziek" };
+    }
+
+    /// <summary>Soorten lampjes (zelfde als in de Android-app).</summary>
+    public static class BulbStyles
+    {
+        public const int Mix = 8;
+        public static readonly string[] Names =
+        {
+            "Klassieke lampjes", "Mini-ledjes", "Glazen bollen", "Vlammetjes", "Sterretjes", "Hartjes",
+            "IJspegels", "Sneeuwvlokken", "Mix van alles"
+        };
     }
 
     public static class Palettes

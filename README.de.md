@@ -46,6 +46,8 @@
 
 <p align="center"><img src="docs/palettes.png" alt="Farbpaletten" width="600"><br><sub>Farbpaletten</sub></p>
 
+<p align="center"><img src="docs/bulb-styles.en.png" alt="Lampensorten" width="860"><br><sub>Lampensorten</sub></p>
+
 <table>
 <tr>
 <td align="center"><img src="docs/fireworks-rockets.jpg" alt="Raketen" width="260"><br><sub>Raketen</sub></td>

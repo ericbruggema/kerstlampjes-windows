@@ -27,17 +27,18 @@
 2. [Quick start](#-quick-start)
 3. [The tray icon and menu](#-the-tray-icon-and-menu)
 4. [Settings](#-settings)
-5. [Decorations](#-decorations)
-6. [Fireworks shows](#-fireworks-shows)
-7. [Interacting with it](#-interacting-with-it)
-8. [Effects, colours and the microphone](#-effects-colours-and-the-microphone)
-9. [Screens, full-screen apps and desktop-only](#-screens-full-screen-apps-and-desktop-only)
-10. [Privacy and permissions](#-privacy-and-permissions)
-11. [Performance](#-performance)
-12. [Frequently asked questions](#-frequently-asked-questions)
-13. [Building from source](#-building-from-source)
-14. [How it works](#-how-it-works)
-15. [Open source and reuse](#-open-source-and-reuse)
+5. [Types of lights](#-types-of-lights)
+6. [Decorations](#-decorations)
+7. [Fireworks shows](#-fireworks-shows)
+8. [Interacting with it](#-interacting-with-it)
+9. [Effects, colours and the microphone](#-effects-colours-and-the-microphone)
+10. [Screens, full-screen apps and desktop-only](#-screens-full-screen-apps-and-desktop-only)
+11. [Privacy and permissions](#-privacy-and-permissions)
+12. [Performance](#-performance)
+13. [Frequently asked questions](#-frequently-asked-questions)
+14. [Building from source](#-building-from-source)
+15. [How it works](#-how-it-works)
+16. [Open source and reuse](#-open-source-and-reuse)
 
 ---
 
@@ -115,6 +116,7 @@ Every change takes effect immediately and is saved. There are two tabs.
 |---|---|
 | **Effect** | Steady, Twinkle, Alternate blinking, Chasing light, Colour wave, or *To the music* (see below) |
 | **Colours** | Classic multicolour, Warm white, Red / green / gold, Ice blue / white, Pink / purple |
+| **Type of lights** | Classic bulbs, Mini LEDs, Glass baubles, Little flames, Little stars, Hearts, Icicles, Snowflakes, or a mix of everything (see [Types of lights](#-types-of-lights)) |
 | **Speed** | 1–10, how fast the effect runs |
 | **Size** | Size of the bulbs (6–40) |
 | **Spacing between lights** | Distance between bulbs (20–120) |
@@ -145,6 +147,26 @@ Tick the decorations you want. The extra options next to a decoration can only b
 | **Sound** | Small synthesised sounds for the train whistle, fireworks and icicles; off by default |
 
 The **Defaults** button puts everything back to how it was.
+
+---
+
+## 💡 Types of lights
+
+Choose **Type of lights** on the Lights tab. There are eight shapes, plus a mix where every bulb gets a different one. Every type works with every effect, every colour palette and every size setting.
+
+<p align="center"><img src="docs/bulb-styles.en.png" alt="The types of lights: classic bulbs, mini LEDs, glass baubles, little flames, little stars, hearts, icicles, snowflakes and a mix" width="900"></p>
+
+| Type | Look |
+|---|---|
+| **Classic bulbs** | The familiar pear-shaped Christmas bulb |
+| **Mini LEDs** | Small round LEDs, close together |
+| **Glass baubles** | Big round glass balls |
+| **Little flames** | Drop-shaped flames |
+| **Little stars** | Five-pointed stars |
+| **Hearts** | Little hearts |
+| **Icicles** | Long, pointed icicle lights |
+| **Snowflakes** | Six-armed snowflakes |
+| **Mix of everything** | A different shape for every bulb |
 
 ---
 

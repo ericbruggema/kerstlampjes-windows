@@ -46,6 +46,8 @@
 
 <p align="center"><img src="docs/palettes.png" alt="颜色方案" width="600"><br><sub>颜色方案</sub></p>
 
+<p align="center"><img src="docs/bulb-styles.en.png" alt="灯的类型" width="860"><br><sub>灯的类型</sub></p>
+
 <table>
 <tr>
 <td align="center"><img src="docs/fireworks-rockets.jpg" alt="火箭" width="260"><br><sub>火箭</sub></td>

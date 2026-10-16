@@ -27,17 +27,18 @@
 2. [Snel starten](#-snel-starten)
 3. [Het icoon en het menu](#-het-icoon-en-het-menu)
 4. [Instellingen](#️-instellingen)
-5. [Versiering](#-versiering)
-6. [Vuurwerkshows](#-vuurwerkshows)
-7. [Ermee spelen](#️-ermee-spelen)
-8. [Effecten, kleuren en de microfoon](#-effecten-kleuren-en-de-microfoon)
-9. [Schermen, schermvullende apps en alleen bureaublad](#️-schermen-schermvullende-apps-en-alleen-bureaublad)
-10. [Privacy en rechten](#-privacy-en-rechten)
-11. [Prestaties](#-prestaties)
-12. [Veelgestelde vragen](#-veelgestelde-vragen)
-13. [Bouwen uit de broncode](#️-bouwen-uit-de-broncode)
-14. [Hoe het werkt](#-hoe-het-werkt)
-15. [Open source en gebruik](#-open-source-en-gebruik)
+5. [Soorten lampjes](#-soorten-lampjes)
+6. [Versiering](#-versiering)
+7. [Vuurwerkshows](#-vuurwerkshows)
+8. [Ermee spelen](#️-ermee-spelen)
+9. [Effecten, kleuren en de microfoon](#-effecten-kleuren-en-de-microfoon)
+10. [Schermen, schermvullende apps en alleen bureaublad](#️-schermen-schermvullende-apps-en-alleen-bureaublad)
+11. [Privacy en rechten](#-privacy-en-rechten)
+12. [Prestaties](#-prestaties)
+13. [Veelgestelde vragen](#-veelgestelde-vragen)
+14. [Bouwen uit de broncode](#️-bouwen-uit-de-broncode)
+15. [Hoe het werkt](#-hoe-het-werkt)
+16. [Open source en gebruik](#-open-source-en-gebruik)
 
 ---
 
@@ -115,6 +116,7 @@ Elke wijziging werkt meteen door en wordt bewaard. Er zijn twee tabbladen.
 |---|---|
 | **Effect** | Vast aan, Fonkelen, Om en om knipperen, Lopend licht, Kleurgolf of *Op de muziek* (zie hieronder) |
 | **Kleuren** | Klassiek bont, Warm wit, Rood / groen / goud, IJsblauw / wit, Roze / paars |
+| **Soort lampjes** | Klassieke lampjes, Mini-ledjes, Glazen bollen, Vlammetjes, Sterretjes, Hartjes, IJspegels, Sneeuwvlokken of een mix van alles (zie [Soorten lampjes](#-soorten-lampjes)) |
 | **Snelheid** | 1–10, hoe snel het effect loopt |
 | **Grootte** | Grootte van de lampjes (6–40) |
 | **Afstand tussen lampjes** | Afstand tussen de lampjes (20–120) |
@@ -145,6 +147,26 @@ Vink de versiering aan die je wilt. De extra opties bij een onderdeel zijn pas t
 | **Geluid** | Kleine, zelf gesynthetiseerde geluidjes voor de treinfluit, het vuurwerk en de ijspegels; staat standaard uit |
 
 Met de knop **Standaardwaarden** zet je alles terug.
+
+---
+
+## 💡 Soorten lampjes
+
+Kies **Soort lampjes** op het tabblad Lampjes. Er zijn acht vormen, plus een mix waarbij elk lampje een andere krijgt. Elke soort werkt met elk effect, elk kleurenpalet en elke grootte-instelling.
+
+<p align="center"><img src="docs/bulb-styles.nl.png" alt="De soorten lampjes: klassieke lampjes, mini-ledjes, glazen bollen, vlammetjes, sterretjes, hartjes, ijspegels, sneeuwvlokken en een mix" width="900"></p>
+
+| Soort | Uiterlijk |
+|---|---|
+| **Klassieke lampjes** | De bekende peervormige kerstlamp |
+| **Mini-ledjes** | Kleine, ronde ledjes dicht bij elkaar |
+| **Glazen bollen** | Grote, ronde glazen ballen |
+| **Vlammetjes** | Druppelvormige vlammetjes |
+| **Sterretjes** | Sterren met vijf punten |
+| **Hartjes** | Kleine hartjes |
+| **IJspegels** | Lange, spitse ijspegellampjes |
+| **Sneeuwvlokken** | Sneeuwvlokken met zes armen |
+| **Mix van alles** | Een andere vorm voor elk lampje |
 
 ---
 

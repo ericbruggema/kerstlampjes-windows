@@ -220,12 +220,12 @@ namespace Kerstlampjes
         readonly System.Collections.Generic.Dictionary<int, Bitmap> sprites = new System.Collections.Generic.Dictionary<int, Bitmap>();
         int spriteD;
 
-        Bitmap Sprite(int ci, int level, int bucket)
+        Bitmap Sprite(int ci, int level, int bucket, int style)
         {
-            int key = (ci * Levels + level) * 64 + bucket;
+            int key = style * 4096 + (ci * Levels + level) * 64 + bucket;
             Bitmap bmp;
             if (sprites.TryGetValue(key, out bmp)) return bmp;
-            if (sprites.Count > 900) { foreach (var b in sprites.Values) b.Dispose(); sprites.Clear(); }
+            if (sprites.Count > 1600) { foreach (var b in sprites.Values) b.Dispose(); sprites.Clear(); }
             var palette = Palettes.Colors[s.Palette];
             var baseCol = Color.FromArgb(palette[ci]);
             float k = level / (float)(Levels - 1);
@@ -239,14 +239,104 @@ namespace Kerstlampjes
                 int gl = Math.Min(GlowLevels - 1, (int)(k * k * GlowLevels));
                 int gd = glow[ci][gl].Width;
                 g.DrawImageUnscaled(glow[ci][gl], (int)(-gd / 2f), (int)(glassCenterY - gd / 2f));
-                g.FillRectangle(socketBrush, -socketW / 2, 0, socketW, socketH);
-                brush.Color = Lerp(Darken(baseCol), baseCol, k);
-                g.FillPath(brush, glass);
-                brush.Color = Color.FromArgb((int)(60 + 140 * k), 255, 255, 255);
-                g.FillEllipse(brush, -size * 0.28f, socketH + size * 0.15f, size * 0.2f, size * 0.5f);
+                DrawBulb(g, style, Lerp(Darken(baseCol), baseCol, k), k);
             }
             sprites[key] = bmp;
             return bmp;
+        }
+
+        /// <summary>Welke soort lampje bij lampje i hoort (bij "Mix van alles" wisselt het per lampje).</summary>
+        int StyleOf(int i) { return s.BulbStyle == BulbStyles.Mix ? (i * 3 + i / 8) % 8 : s.BulbStyle; }
+
+        /// <summary>Eén lampje, hangend aan de draad bij (0,0), in de gekozen soort (z = grootte).</summary>
+        void DrawBulb(Graphics g, int style, Color col, float k)
+        {
+            float z = size;
+            var shine = Color.FromArgb((int)(60 + 140 * k), 255, 255, 255);
+            Action<float, float, float, float> cap = (l, t, w, h) => g.FillRectangle(socketBrush, l, t, w, h);
+            Action<float, float, float, float> oval = (l, t, w, h) => { brush.Color = shine; g.FillEllipse(brush, l, t, w, h); };
+            brush.Color = col;
+            switch (style)
+            {
+                case 1: // mini-ledje
+                    cap(-z * 0.12f, -z * 0.05f, z * 0.24f, z * 0.37f);
+                    brush.Color = col; g.FillEllipse(brush, -z * 0.34f, z * 0.62f - z * 0.34f, z * 0.68f, z * 0.68f);
+                    oval(-z * 0.18f, z * 0.44f, z * 0.16f, z * 0.16f);
+                    break;
+                case 2: // glazen bol
+                    cap(-z * 0.22f, -z * 0.05f, z * 0.44f, z * 0.43f);
+                    brush.Color = col; g.FillEllipse(brush, -z * 0.66f, z * 1.02f - z * 0.66f, z * 1.32f, z * 1.32f);
+                    oval(-z * 0.42f, z * 0.68f, z * 0.3f, z * 0.44f);
+                    break;
+                case 3: // vlammetje
+                    {
+                        cap(-z * 0.16f, -z * 0.05f, z * 0.32f, z * 0.47f);
+                        using (var p = new GraphicsPath())
+                        {
+                            p.AddBezier(0, z * 1.9f, z * 0.62f, z * 1.25f, z * 0.5f, z * 0.6f, 0, z * 0.42f);
+                            p.AddBezier(0, z * 0.42f, -z * 0.5f, z * 0.6f, -z * 0.62f, z * 1.25f, 0, z * 1.9f);
+                            p.CloseFigure();
+                            brush.Color = col; g.FillPath(brush, p);
+                        }
+                        oval(-z * 0.2f, z * 0.8f, z * 0.14f, z * 0.45f);
+                        break;
+                    }
+                case 4: // sterretje
+                    {
+                        cap(-z * 0.1f, -z * 0.05f, z * 0.2f, z * 0.35f);
+                        var pts = new PointF[10];
+                        for (int i = 0; i < 10; i++)
+                        {
+                            float r = i % 2 == 0 ? z * 0.78f : z * 0.34f, a = (float)(-Math.PI / 2 + i * Math.PI / 5);
+                            pts[i] = new PointF(r * (float)Math.Cos(a), z * 1.05f + r * (float)Math.Sin(a));
+                        }
+                        brush.Color = col; g.FillPolygon(brush, pts);
+                        brush.Color = shine; g.FillEllipse(brush, -z * 0.16f, z * 0.87f, z * 0.16f, z * 0.16f);
+                        break;
+                    }
+                case 5: // hartje
+                    {
+                        cap(-z * 0.1f, -z * 0.05f, z * 0.2f, z * 0.35f);
+                        float r = z * 0.62f, cy = z * 1.0f;
+                        using (var p = new GraphicsPath())
+                        {
+                            p.AddBezier(0, cy + r * 0.95f, -r * 1.4f, cy + r * 0.05f, -r * 0.8f, cy - r * 0.95f, 0, cy - r * 0.35f);
+                            p.AddBezier(0, cy - r * 0.35f, r * 0.8f, cy - r * 0.95f, r * 1.4f, cy + r * 0.05f, 0, cy + r * 0.95f);
+                            p.CloseFigure();
+                            brush.Color = col; g.FillPath(brush, p);
+                        }
+                        brush.Color = shine; g.FillEllipse(brush, -r * 0.45f - r * 0.13f, cy - r * 0.15f - r * 0.13f, r * 0.26f, r * 0.26f);
+                        break;
+                    }
+                case 6: // ijspegel
+                    cap(-z * 0.14f, -z * 0.05f, z * 0.28f, z * 0.35f);
+                    brush.Color = col;
+                    g.FillPolygon(brush, new[]
+                    {
+                        new PointF(-z * 0.3f, z * 0.3f), new PointF(z * 0.3f, z * 0.3f), new PointF(z * 0.06f, z * 2.1f),
+                        new PointF(0, z * 2.25f), new PointF(-z * 0.06f, z * 2.1f)
+                    });
+                    brush.Color = shine; g.FillRectangle(brush, -z * 0.2f, z * 0.45f, z * 0.1f, z * 0.75f);
+                    break;
+                case 7: // sneeuwvlok
+                    {
+                        cap(-z * 0.1f, -z * 0.05f, z * 0.2f, z * 0.35f);
+                        float cy = z * 1.05f, r = z * 0.72f;
+                        using (var pen = new Pen(col, z * 0.14f) { StartCap = LineCap.Round, EndCap = LineCap.Round })
+                            for (int i = 0; i < 3; i++)
+                            {
+                                float a = (float)(i * Math.PI / 3);
+                                g.DrawLine(pen, -r * (float)Math.Cos(a), cy - r * (float)Math.Sin(a), r * (float)Math.Cos(a), cy + r * (float)Math.Sin(a));
+                            }
+                        brush.Color = shine; g.FillEllipse(brush, -z * 0.16f, cy - z * 0.16f, z * 0.32f, z * 0.32f);
+                        break;
+                    }
+                default: // klassieke peer
+                    cap(-z * 0.21f, 0, z * 0.42f, z * 0.45f);
+                    brush.Color = col; g.FillPath(brush, glass);
+                    oval(-z * 0.28f, z * 0.45f * 1f + z * 0.15f, z * 0.2f, z * 0.5f);
+                    break;
+            }
         }
 
         void DrawLights(Graphics g, float t)
@@ -261,7 +351,7 @@ namespace Kerstlampjes
                 int ci = (colorIdx[i] + waveShift) % palette.Length;
                 int level = Math.Max(0, Math.Min(Levels - 1, (int)Math.Round(Intensity(i, t) * (Levels - 1))));
                 int bucket = ((int)Math.Round(ang[i] / AngleStep) % buckets + buckets) % buckets;
-                g.DrawImageUnscaled(Sprite(ci, level, bucket), (int)Math.Round(px[i]) - half, (int)Math.Round(py[i]) - half);
+                g.DrawImageUnscaled(Sprite(ci, level, bucket, StyleOf(i)), (int)Math.Round(px[i]) - half, (int)Math.Round(py[i]) - half);
             }
         }
 

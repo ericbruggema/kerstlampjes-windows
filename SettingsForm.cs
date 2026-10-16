@@ -13,7 +13,7 @@ namespace Kerstlampjes
         readonly Action<bool> setAutostart;
         bool loading;
 
-        ComboBox mode, palette, trainView, fireShow;
+        ComboBox mode, palette, bulbStyle, trainView, fireShow;
         TrackBar speed, size, spacing, corner, inset, sag, opacity, wagons;
         CheckBox snowFull, desktopOnly, allScreens, hideFull, autostart, showLights, trainLights, garlandBalls, sound;
         CheckBox[] decor;
@@ -39,6 +39,8 @@ namespace Kerstlampjes
             palette = Combo(Palettes.Names);
             AddRow(t1, "Effect", mode);
             AddRow(t1, "Kleuren", palette);
+            bulbStyle = Combo(BulbStyles.Names);
+            AddRow(t1, "Soort lampjes", bulbStyle);
             speed = Slider(t1, "Snelheid", 1, 10);
             size = Slider(t1, "Grootte", 6, 40);
             spacing = Slider(t1, "Afstand tussen lampjes", 20, 120);
@@ -97,7 +99,7 @@ namespace Kerstlampjes
             UpdateEnabled();
 
             EventHandler commit = delegate { Commit(); };
-            mode.SelectedIndexChanged += commit; fireShow.SelectedIndexChanged += commit; palette.SelectedIndexChanged += commit; trainView.SelectedIndexChanged += commit;
+            mode.SelectedIndexChanged += commit; bulbStyle.SelectedIndexChanged += commit; fireShow.SelectedIndexChanged += commit; palette.SelectedIndexChanged += commit; trainView.SelectedIndexChanged += commit;
             foreach (var c in new[] { snowFull, desktopOnly, allScreens, hideFull, showLights, trainLights, garlandBalls, sound }) c.CheckedChanged += commit;
             foreach (var c in decor) c.CheckedChanged += commit;
             marquee.TextChanged += commit;
@@ -162,6 +164,7 @@ namespace Kerstlampjes
             loading = true;
             mode.SelectedIndex = s.Mode;
             palette.SelectedIndex = s.Palette;
+            bulbStyle.SelectedIndex = Math.Max(0, Math.Min(BulbStyles.Mix, s.BulbStyle));
             speed.Value = s.Speed; size.Value = s.Size; spacing.Value = s.Spacing; corner.Value = s.Corner;
             inset.Value = s.Inset; sag.Value = s.Sag; opacity.Value = s.Opacity;
             allScreens.Checked = s.AllScreens; hideFull.Checked = s.HideFullscreen; showLights.Checked = s.ShowLights; desktopOnly.Checked = s.DesktopOnly;
@@ -191,6 +194,7 @@ namespace Kerstlampjes
             if (loading) return;
             s.Mode = Math.Max(0, mode.SelectedIndex);
             s.Palette = Math.Max(0, palette.SelectedIndex);
+            s.BulbStyle = Math.Max(0, bulbStyle.SelectedIndex);
             s.Speed = speed.Value; s.Size = size.Value; s.Spacing = spacing.Value; s.Corner = corner.Value;
             s.Inset = inset.Value; s.Sag = sag.Value; s.Opacity = opacity.Value;
             s.AllScreens = allScreens.Checked; s.HideFullscreen = hideFull.Checked; s.ShowLights = showLights.Checked; s.DesktopOnly = desktopOnly.Checked;
@@ -208,7 +212,7 @@ namespace Kerstlampjes
         void ResetToDefaults()
         {
             var d = new Settings();
-            s.Mode = d.Mode; s.Palette = d.Palette; s.Speed = d.Speed; s.Size = d.Size; s.Spacing = d.Spacing;
+            s.Mode = d.Mode; s.Palette = d.Palette; s.BulbStyle = d.BulbStyle; s.Speed = d.Speed; s.Size = d.Size; s.Spacing = d.Spacing;
             s.Corner = d.Corner; s.Inset = d.Inset; s.Sag = d.Sag; s.Opacity = d.Opacity;
             s.AllScreens = d.AllScreens; s.HideFullscreen = d.HideFullscreen; s.ShowLights = d.ShowLights; s.DesktopOnly = d.DesktopOnly;
             s.DecorMask = d.DecorMask; s.TrainSide = d.TrainSide; s.TrainWagons = d.TrainWagons;

@@ -46,6 +46,8 @@
 
 <p align="center"><img src="docs/palettes.png" alt="Palettes de couleurs" width="600"><br><sub>Palettes de couleurs</sub></p>
 
+<p align="center"><img src="docs/bulb-styles.en.png" alt="Types de lumières" width="860"><br><sub>Types de lumières</sub></p>
+
 <table>
 <tr>
 <td align="center"><img src="docs/fireworks-rockets.jpg" alt="Fusées" width="260"><br><sub>Fusées</sub></td>
