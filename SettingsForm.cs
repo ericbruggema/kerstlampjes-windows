@@ -13,9 +13,9 @@ namespace Kerstlampjes
         readonly Action<bool> setAutostart;
         bool loading;
 
-        ComboBox mode, palette, trainView;
+        ComboBox mode, palette, trainView, fireShow;
         TrackBar speed, size, spacing, corner, inset, sag, opacity, wagons;
-        CheckBox desktopOnly, allScreens, hideFull, autostart, showLights, trainLights, garlandBalls, sound;
+        CheckBox snowFull, desktopOnly, allScreens, hideFull, autostart, showLights, trainLights, garlandBalls, sound;
         CheckBox[] decor;
         TextBox marquee;
 
@@ -56,6 +56,9 @@ namespace Kerstlampjes
             var t2 = NewTable();
             decor = new CheckBox[Decor.Flags.Length];
             for (int i = 0; i < decor.Length; i++) decor[i] = AddCheck(t2, Tr.t(Decor.Names[i]));
+            snowFull = AddCheck(t2, Tr.t("Sneeuw over het hele scherm"));
+            fireShow = Combo(FireShows.Names);
+            AddRow(t2, "Vuurwerkshow", fireShow);
             trainView = Combo(Decor.TrainViews);
             AddRow(t2, "Treintje", trainView);
             wagons = Slider(t2, "Aantal wagons", 1, 8);
@@ -73,7 +76,8 @@ namespace Kerstlampjes
 
             var reset = new Button { Text = Tr.t("Standaardwaarden"), AutoSize = true };
             reset.Click += delegate { ResetToDefaults(); };
-            var close = new Button { Text = Tr.t("Sluiten"), AutoSize = true, DialogResult = DialogResult.OK };
+            var close = new Button { Text = Tr.t("Sluiten"), AutoSize = true };
+            close.Click += delegate { Close(); };
             var buttons = new FlowLayoutPanel
             {
                 FlowDirection = FlowDirection.RightToLeft, AutoSize = true, Dock = DockStyle.Bottom,
@@ -90,12 +94,14 @@ namespace Kerstlampjes
             ClientSize = new Size(pageW + 16 + Padding.Horizontal + 8,
                 Math.Min(pageH, Screen.PrimaryScreen.WorkingArea.Height - 260) + 48 + buttons.PreferredSize.Height + Padding.Vertical);
             LoadValues();
+            UpdateEnabled();
 
             EventHandler commit = delegate { Commit(); };
-            mode.SelectedIndexChanged += commit; palette.SelectedIndexChanged += commit; trainView.SelectedIndexChanged += commit;
-            foreach (var c in new[] { desktopOnly, allScreens, hideFull, showLights, trainLights, garlandBalls, sound }) c.CheckedChanged += commit;
+            mode.SelectedIndexChanged += commit; fireShow.SelectedIndexChanged += commit; palette.SelectedIndexChanged += commit; trainView.SelectedIndexChanged += commit;
+            foreach (var c in new[] { snowFull, desktopOnly, allScreens, hideFull, showLights, trainLights, garlandBalls, sound }) c.CheckedChanged += commit;
             foreach (var c in decor) c.CheckedChanged += commit;
             marquee.TextChanged += commit;
+            foreach (var c in decor) c.CheckedChanged += delegate { UpdateEnabled(); };
             autostart.CheckedChanged += delegate { if (!loading) setAutostart(autostart.Checked); };
         }
 
@@ -161,11 +167,23 @@ namespace Kerstlampjes
             allScreens.Checked = s.AllScreens; hideFull.Checked = s.HideFullscreen; showLights.Checked = s.ShowLights; desktopOnly.Checked = s.DesktopOnly;
             autostart.Checked = getAutostart();
             for (int i = 0; i < decor.Length; i++) decor[i].Checked = (s.DecorMask & Decor.Flags[i]) != 0;
+            fireShow.SelectedIndex = Math.Max(0, Math.Min(FireShows.Names.Length - 1, s.FireShow));
             trainView.SelectedIndex = s.TrainSide ? 1 : 0;
             wagons.Value = s.TrainWagons;
-            trainLights.Checked = s.TrainLights; garlandBalls.Checked = s.GarlandBalls; sound.Checked = s.Sound;
+            snowFull.Checked = s.SnowFull; trainLights.Checked = s.TrainLights; garlandBalls.Checked = s.GarlandBalls; sound.Checked = s.Sound;
             marquee.Text = s.Marquee ?? "";
             loading = false;
+        }
+
+        /// <summary>Opties die bij een onderdeel horen zijn pas te kiezen als dat onderdeel aan staat.</summary>
+        void UpdateEnabled()
+        {
+            Func<int, bool> on = f => decor[Array.IndexOf(Decor.Flags, f)].Checked;
+            garlandBalls.Enabled = on(Decor.Garland);
+            snowFull.Enabled = on(Decor.Snow);
+            fireShow.Enabled = on(Decor.Fireworks);
+            trainView.Enabled = wagons.Enabled = trainLights.Enabled = on(Decor.Train);
+            marquee.Enabled = on(Decor.Marquee);
         }
 
         void Commit()
@@ -179,9 +197,10 @@ namespace Kerstlampjes
             int mask = 0;
             for (int i = 0; i < decor.Length; i++) if (decor[i].Checked) mask |= Decor.Flags[i];
             s.DecorMask = mask;
+            s.FireShow = Math.Max(0, fireShow.SelectedIndex);
             s.TrainSide = trainView.SelectedIndex == 1;
             s.TrainWagons = wagons.Value;
-            s.TrainLights = trainLights.Checked; s.GarlandBalls = garlandBalls.Checked; s.Sound = sound.Checked;
+            s.SnowFull = snowFull.Checked; s.TrainLights = trainLights.Checked; s.GarlandBalls = garlandBalls.Checked; s.Sound = sound.Checked;
             s.Marquee = marquee.Text;
             changed();
         }
@@ -193,7 +212,7 @@ namespace Kerstlampjes
             s.Corner = d.Corner; s.Inset = d.Inset; s.Sag = d.Sag; s.Opacity = d.Opacity;
             s.AllScreens = d.AllScreens; s.HideFullscreen = d.HideFullscreen; s.ShowLights = d.ShowLights; s.DesktopOnly = d.DesktopOnly;
             s.DecorMask = d.DecorMask; s.TrainSide = d.TrainSide; s.TrainWagons = d.TrainWagons;
-            s.TrainLights = d.TrainLights; s.GarlandBalls = d.GarlandBalls; s.Sound = d.Sound; s.Marquee = d.Marquee;
+            s.FireShow = d.FireShow; s.SnowFull = d.SnowFull; s.TrainLights = d.TrainLights; s.GarlandBalls = d.GarlandBalls; s.Sound = d.Sound; s.Marquee = d.Marquee;
             LoadValues();
             changed();
         }

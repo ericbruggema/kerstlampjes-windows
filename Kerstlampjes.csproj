@@ -9,7 +9,7 @@
     <RootNamespace>Kerstlampjes</RootNamespace>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <ApplicationIcon>kerstlampjes.ico</ApplicationIcon>
-    <Version>1.1.0</Version>
+    <Version>1.2.0</Version>
     <Company>Kerstlampjes</Company>
     <Product>Kerstlampjes</Product>
     <Copyright>MIT - https://github.com/ericbruggema/kerstlampjes</Copyright>

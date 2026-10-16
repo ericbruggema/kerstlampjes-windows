@@ -63,10 +63,10 @@ namespace Kerstlampjes
         }
     }
 
-    public class RimDecor : IDisposable
+    public partial class RimDecor : IDisposable
     {
-        class Spark { public float X, Y, VX, VY, Age, Life, Size, Grav; public Color Col; }
-        class Rocket { public float X, Y, VY, TY; }
+        class Spark { public float X, Y, VX, VY, Age, Life, Size, Grav, Drag; public Color Col; }
+        class Rocket { public float X, Y, VX, VY, TY, Hue; public int Style, Count; }
         class Star { public float X, Y, VX, VY, Age, Life; }
         class Puff { public float X, Y, VX, VY, Age, Life, R; }
         class Penguin { public float X, Dir, Pause, HopY, HopV, Phase; }
@@ -84,6 +84,10 @@ namespace Kerstlampjes
         public bool FireworksOnAnyClick;
 
         public bool Active { get { return s.DecorMask != 0; } }
+        /// <summary>Aantal sneeuwvlokken: meer als de sneeuw over het hele scherm valt.</summary>
+        int FlakeN { get { return s.SnowFull ? NFlakes : 60; } }
+        bool lastSnowFull;
+
         bool On(int f) { return (s.DecorMask & f) != 0; }
 
         readonly SolidBrush br = new SolidBrush(Color.White);
@@ -91,7 +95,7 @@ namespace Kerstlampjes
         readonly GraphicsPath path = new GraphicsPath();
 
         // sneeuwvlokken en sterretjes
-        const int NFlakes = 60, NSpark = 14;
+        const int NFlakes = 150, NSpark = 14;
         readonly float[] fx = new float[NFlakes], fy = new float[NFlakes], fv = new float[NFlakes], fs = new float[NFlakes], fp = new float[NFlakes];
         readonly float[] sx = new float[NSpark], sy = new float[NSpark], sp = new float[NSpark], ss = new float[NSpark];
 
@@ -153,13 +157,14 @@ namespace Kerstlampjes
             {
                 pile = new float[Math.Max(2, (int)(w / (4f * d)) + 1)];
                 BuildIcicles();
-                for (int i = 0; i < NFlakes; i++) ResetFlake(i, true);
+                for (int i = 0; i < FlakeN; i++) ResetFlake(i, true);
                 for (int i = 0; i < NSpark; i++) NewSparkle(i);
                 penguins.Clear();
                 penguins.Add(new Penguin { X = w * 0.25f, Dir = 1, Pause = 0, Phase = 0 });
                 penguins.Add(new Penguin { X = w * 0.55f, Dir = -1, Pause = 1, Phase = 2 });
                 snowmanX = w * 0.82f;
             }
+            if (lastSnowFull != s.SnowFull) { lastSnowFull = s.SnowFull; for (int i = 0; i < NFlakes; i++) ResetFlake(i, true); }
             if (On(Decor.Train)) BuildTrack();
             BuildStatic();
             BuildMarquee();
@@ -170,7 +175,7 @@ namespace Kerstlampjes
         void ResetFlake(int i, bool anywhere)
         {
             float b = BandW();
-            fx[i] = rnd.Next(2) == 0 ? R(0f, b) : R(w - b, w);
+            fx[i] = s.SnowFull ? R(0f, w) : (rnd.Next(2) == 0 ? R(0f, b) : R(w - b, w));
             fy[i] = anywhere ? R(-20f * d, h) : -10f * d;
             fv[i] = R(28f, 70f) * d;
             fs[i] = R(1.2f, 3.2f) * d;
@@ -400,11 +405,6 @@ namespace Kerstlampjes
             }
         }
 
-        public void LaunchFirework()
-        {
-            rockets.Add(new Rocket { X = R(w * 0.12f, w * 0.88f), Y = h, VY = -R(420f, 620f) * d, TY = R(h * 0.15f, h * 0.5f) });
-        }
-
         public void DropIcicles()
         {
             for (int i = 0; i < ix.Length; i++) if (!ifall[i] && ilen[i] > 4f * d) { ifall[i] = true; ivy[i] = -R(0f, 200f) * d; }
@@ -473,7 +473,7 @@ namespace Kerstlampjes
 
         void AddSpark(float x, float y, Color col, float life, float spread)
         {
-            if (sparks.Count > 520) return;
+            if (sparks.Count > 900) return;
             sparks.Add(new Spark { X = x, Y = y, VX = R(-30f, 30f) * d * spread, VY = -R(10f, 60f) * d * spread, Life = life * R(0.6f, 1f), Col = col, Size = R(1.2f, 2.6f) * d, Grav = 120f * d });
         }
 
@@ -486,21 +486,6 @@ namespace Kerstlampjes
             return Color.FromArgb((int)(r * 255), (int)(g * 255), (int)(b * 255));
         }
 
-        void Burst(float x, float y)
-        {
-            Sounds.Boom(s.Sound);
-            float hue = R(0f, 360f);
-            int n = 46;
-            bool ring = rnd.Next(2) == 0;
-            for (int i = 0; i < n; i++)
-            {
-                if (sparks.Count > 520) break;
-                float a = (float)(2 * Math.PI * i / n) + R(-0.05f, 0.05f);
-                float spd = (ring ? 130f : R(50f, 170f)) * d;
-                sparks.Add(new Spark { X = x, Y = y, VX = (float)Math.Cos(a) * spd, VY = (float)Math.Sin(a) * spd, Life = R(1.0f, 1.8f), Col = Hsv((hue + R(-25f, 25f) + 360f) % 360f, R(0.45f, 0.9f), 1f), Size = R(1.6f, 3.0f) * d, Grav = 85f * d });
-            }
-        }
-
         public void Update()
         {
             long now = clock.ElapsedMilliseconds;
@@ -509,7 +494,7 @@ namespace Kerstlampjes
             if (w <= 0) return;
 
             if (On(Decor.Snow))
-                for (int i = 0; i < NFlakes; i++)
+                for (int i = 0; i < FlakeN; i++)
                 {
                     fy[i] += fv[i] * dt;
                     fx[i] += (float)Math.Sin(time * 1.3f + fp[i]) * 12f * d * dt;
@@ -569,17 +554,13 @@ namespace Kerstlampjes
                 if (pf.Age > pf.Life) puffs.RemoveAt(i);
             }
 
-            if (On(Decor.Fireworks)) { fireT -= dt; if (fireT <= 0f) { fireT = R(2.5f, 6f); LaunchFirework(); } }
-            for (int i = rockets.Count - 1; i >= 0; i--)
-            {
-                var rk = rockets[i];
-                rk.Y += rk.VY * dt;
-                if (rk.Y <= rk.TY) { Burst(rk.X, rk.Y); rockets.RemoveAt(i); }
-            }
+            UpdateFireworks(dt);
             for (int i = sparks.Count - 1; i >= 0; i--)
             {
                 var sk = sparks[i];
-                sk.Age += dt; sk.VY += sk.Grav * dt; sk.X += sk.VX * dt; sk.Y += sk.VY * dt;
+                sk.Age += dt; sk.VY += sk.Grav * dt;
+                if (sk.Drag > 0f) { float k = Math.Max(0f, 1f - sk.Drag * dt); sk.VX *= k; sk.VY *= k; }
+                sk.X += sk.VX * dt; sk.Y += sk.VY * dt;
                 if (sk.Age > sk.Life || sk.Y > h + 20f * d) sparks.RemoveAt(i);
             }
 
@@ -720,7 +701,7 @@ namespace Kerstlampjes
         void DrawSnow(Graphics g)
         {
             br.Color = Color.FromArgb(0xE6, 255, 255, 255);
-            for (int i = 0; i < NFlakes; i++) g.FillEllipse(br, fx[i] - fs[i], fy[i] - fs[i], 2 * fs[i], 2 * fs[i]);
+            for (int i = 0; i < FlakeN; i++) g.FillEllipse(br, fx[i] - fs[i], fy[i] - fs[i], 2 * fs[i], 2 * fs[i]);
             for (int i = 0; i < NSpark; i++)
             {
                 float a = (float)Math.Sin(time * 1.7f + sp[i]);
@@ -740,6 +721,7 @@ namespace Kerstlampjes
 
         void DrawFireworks(Graphics g)
         {
+            DrawEmitters(g);
             foreach (var rk in rockets)
             {
                 Circle(g, rk.X, rk.Y, 2.2f * d, Color.FromArgb(0xFF, 0xE0, 0x8A));
@@ -750,6 +732,7 @@ namespace Kerstlampjes
             {
                 float f = Math.Max(0f, Math.Min(1f, 1f - sk.Age / sk.Life));
                 int a = A(255 * f);
+                if (f > 0.25f) Circle(g, sk.X, sk.Y, sk.Size * 2.4f, Color.FromArgb(a / 7, sk.Col));
                 Circle(g, sk.X, sk.Y, sk.Size * (0.5f + 0.5f * f), Color.FromArgb(a, sk.Col));
                 Circle(g, sk.X - sk.VX * 0.03f, sk.Y - sk.VY * 0.03f, Math.Max(0.3f, sk.Size * 0.7f * f), Color.FromArgb(a / 3, sk.Col));
             }

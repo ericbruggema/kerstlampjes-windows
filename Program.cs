@@ -135,6 +135,7 @@ namespace Kerstlampjes
             Microsoft.Win32.SystemEvents.DisplaySettingsChanged += delegate { rebuildPending = true; };
 
             RebuildOverlays();
+            UpdateMic();
             hookProc = MouseHook;
             hook = Native.SetWindowsHookEx(14, hookProc, Native.GetModuleHandle(Process.GetCurrentProcess().MainModule.ModuleName), 0);
             frame.Start();
@@ -156,6 +157,7 @@ namespace Kerstlampjes
             s.Save();
             UpdateTrayIcon();
             ApplyVisibility();
+            UpdateMic();
         }
 
         void RebuildOverlays()
@@ -179,6 +181,25 @@ namespace Kerstlampjes
             if (overlays.Count != (s.AllScreens ? Screen.AllScreens.Length : 1)) { RebuildOverlays(); return; }
             foreach (var o in overlays) o.Apply(s);
             dirty = true;
+            UpdateMic();
+        }
+
+        bool micWarned;
+
+        /// <summary>De microfoon staat alleen open bij het effect "Op de muziek" terwijl de lampjes zichtbaar zijn.</summary>
+        void UpdateMic()
+        {
+            bool want = s.Mode == Modes.Music && s.On && !hiddenByFullscreen;
+            if (want && !MicLevel.Running)
+            {
+                if (!MicLevel.Start() && !micWarned)
+                {
+                    micWarned = true;
+                    MessageBox.Show(Tr.t("De microfoon is niet beschikbaar. Controleer in de Windows-instellingen (Privacy en beveiliging, Microfoon) of apps toegang hebben."),
+                        Tr.t("Kerstlampjes"), MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            else if (!want && MicLevel.Running) MicLevel.Stop();
         }
 
         void ApplyVisibility()
@@ -190,6 +211,7 @@ namespace Kerstlampjes
                 else if (!show && o.Visible) o.Hide();
             }
             dirty = true;
+            UpdateMic();
         }
 
         // Muisklikken lezen we mee zonder ze tegen te houden: ze gaan altijd door naar het venster eronder.
@@ -234,6 +256,7 @@ namespace Kerstlampjes
             if (rebuildPending) { rebuildPending = false; RebuildOverlays(); }
             if (!s.On || hiddenByFullscreen) { clicks.Clear(); return; }
             HandleMouse();
+            MicLevel.Poll();
             bool animated = overlays.Count > 0 && overlays[0].Animated;
             // Vast licht verandert niet: alleen opnieuw tekenen als er iets gewijzigd is.
             if (!animated && !dirty) return;
@@ -258,8 +281,9 @@ namespace Kerstlampjes
 
         void ShowSettings()
         {
-            if (settingsForm != null && !settingsForm.IsDisposed) { settingsForm.Activate(); return; }
+            if (settingsForm != null && !settingsForm.IsDisposed) { settingsForm.Show(); settingsForm.Activate(); return; }
             settingsForm = new SettingsForm(s, ReapplySettings, GetAutostart, SetAutostart);
+            settingsForm.FormClosed += delegate { settingsForm = null; };
             settingsForm.Show();
         }
 
@@ -344,6 +368,7 @@ namespace Kerstlampjes
         protected override void ExitThreadCore()
         {
             frame.Stop(); slow.Stop();
+            MicLevel.Stop();
             if (hook != IntPtr.Zero) { Native.UnhookWindowsHookEx(hook); hook = IntPtr.Zero; }
             foreach (var o in overlays) o.Dispose();
             settingsForm?.Dispose();
@@ -384,7 +409,8 @@ namespace Kerstlampjes
             var link = new LinkLabel { Text = Program.RepoUrl, AutoSize = true, Margin = new Padding(0, 0, 0, 12) };
             link.LinkClicked += delegate { Process.Start(Program.RepoUrl); };
             panel.Controls.Add(link);
-            var ok = new Button { Text = Tr.t("Sluiten"), AutoSize = true, DialogResult = DialogResult.OK };
+            var ok = new Button { Text = Tr.t("Sluiten"), AutoSize = true };
+            ok.Click += delegate { Close(); };
             panel.Controls.Add(ok);
             AcceptButton = ok;
             Controls.Add(panel);
