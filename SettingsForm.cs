@@ -14,6 +14,8 @@ namespace Kerstlampjes
         bool loading;
 
         ComboBox mode, palette, bulbStyle, musicSource, trainView, fireShow;
+        ProgressBar levelBar;
+        System.Windows.Forms.Timer levelTimer;
         TrackBar speed, size, spacing, corner, inset, sag, opacity, wagons;
         CheckBox autoFire, snowFull, desktopOnly, allScreens, hideFull, autostart, showLights, trainLights, garlandBalls, sound;
         CheckBox[] decor;
@@ -41,8 +43,14 @@ namespace Kerstlampjes
             AddRow(t1, "Kleuren", palette);
             bulbStyle = Combo(BulbStyles.Names);
             AddRow(t1, "Soort lampjes", bulbStyle);
-            musicSource = Combo(new[] { "Geluid van de computer", "Microfoon" });
+            musicSource = Combo(new[] { "Geluid van de computer", "Microfoon", "Beide" });
             AddRow(t1, "Muziekbron", musicSource);
+            levelBar = new ProgressBar { Minimum = 0, Maximum = 100, Height = 12 };
+            AddRow(t1, "Geluidsniveau", levelBar);
+            levelTimer = new System.Windows.Forms.Timer { Interval = 80 };
+            levelTimer.Tick += delegate { levelBar.Value = (int)Math.Round(100f * Math.Max(0f, Math.Min(1f, MusicInput.Get(Math.Max(0, musicSource.SelectedIndex))))); };
+            levelTimer.Start();
+            FormClosed += delegate { levelTimer.Stop(); levelTimer.Dispose(); };
             speed = Slider(t1, "Snelheid", 1, 10);
             size = Slider(t1, "Grootte", 6, 40);
             spacing = Slider(t1, "Afstand tussen lampjes", 20, 120);
@@ -167,7 +175,7 @@ namespace Kerstlampjes
             loading = true;
             mode.SelectedIndex = s.Mode;
             palette.SelectedIndex = s.Palette;
-            musicSource.SelectedIndex = Math.Max(0, Math.Min(1, s.MusicSource));
+            musicSource.SelectedIndex = Math.Max(0, Math.Min(2, s.MusicSource));
             autoFire.Checked = s.AutoFireworks;
             bulbStyle.SelectedIndex = Math.Max(0, Math.Min(BulbStyles.Mix, s.BulbStyle));
             speed.Value = s.Speed; size.Value = s.Size; spacing.Value = s.Spacing; corner.Value = s.Corner;
@@ -192,6 +200,7 @@ namespace Kerstlampjes
             fireShow.Enabled = on(Decor.Fireworks);
             autoFire.Enabled = on(Decor.Fireworks);
             musicSource.Enabled = mode.SelectedIndex == Modes.Music;
+            levelBar.Enabled = mode.SelectedIndex == Modes.Music;
             trainView.Enabled = wagons.Enabled = trainLights.Enabled = on(Decor.Train);
             marquee.Enabled = on(Decor.Marquee);
         }

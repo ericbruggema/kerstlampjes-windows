@@ -211,8 +211,8 @@ namespace Kerstlampjes
         void UpdateMic()
         {
             bool wantAny = s.Mode == Modes.Music && s.On && !hiddenByFullscreen;
-            bool want = wantAny && s.MusicSource == 1;
-            bool wantSys = wantAny && s.MusicSource != 1;
+            bool want = wantAny && s.MusicSource != 0;      // microfoon (1) of beide (2)
+            bool wantSys = wantAny && s.MusicSource != 1;   // computergeluid (0) of beide (2)
             if (wantSys && !SystemAudio.Running) SystemAudio.Start();
             else if (!wantSys && SystemAudio.Running) SystemAudio.Stop();
             if (want && !MicLevel.Running)

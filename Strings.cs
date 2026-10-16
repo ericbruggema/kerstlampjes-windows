@@ -120,6 +120,8 @@ namespace Kerstlampjes
             { "Microfoon", new[] { "Microphone", "Mikrofon", "Microphone", "Micrófono", "麦克风" } },
             { "Vuurwerk automatisch afsteken", new[] { "Launch fireworks automatically", "Feuerwerk automatisch zünden", "Lancer les feux automatiquement", "Lanzar fuegos artificiales automáticamente", "自动放烟花" } },
             { "Kerstlampjes draait al. Sluit het eerst via het icoon in het systeemvak (rechtermuisknop, Afsluiten) en start het daarna opnieuw.", new[] { "Christmas Lights is already running. First close it from the icon in the system tray (right-click, Exit), then start it again.", "Weihnachtslichter läuft bereits. Beende es zuerst über das Symbol im Infobereich (Rechtsklick, Beenden) und starte es dann neu.", "Lumières de Noël est déjà en cours d'exécution. Ferme-le d'abord depuis l'icône de la zone de notification (clic droit, Quitter), puis relance-le.", "Luces de Navidad ya se está ejecutando. Ciérralo primero desde el icono de la bandeja del sistema (clic derecho, Salir) y vuelve a iniciarlo.", "圣诞彩灯已在运行。请先通过系统托盘图标关闭它（右键，退出），然后重新启动。" } },
+            { "Beide", new[] { "Both", "Beide", "Les deux", "Ambos", "两者" } },
+            { "Geluidsniveau", new[] { "Sound level", "Lautstärke", "Niveau sonore", "Nivel de sonido", "音量" } },
             { "Versie", new[] { "Version", "Version", "Version", "Versión", "版本" } },
             { "Website en broncode", new[] { "Website and source code", "Website und Quellcode", "Site web et code source", "Sitio web y código fuente", "网站与源代码" } },
         };

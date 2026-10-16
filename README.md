@@ -119,7 +119,7 @@ Elke wijziging werkt meteen door en wordt bewaard. Er zijn twee tabbladen.
 | **Effect** | Vast aan, Fonkelen, Om en om knipperen, Lopend licht, Kleurgolf of *Op de muziek* (zie hieronder) |
 | **Kleuren** | Klassiek bont, Warm wit, Rood / groen / goud, IJsblauw / wit, Roze / paars |
 | **Soort lampjes** | Klassieke lampjes, Mini-ledjes, Glazen bollen, Vlammetjes, Sterretjes, Hartjes, IJspegels, Sneeuwvlokken of een mix van alles (zie [Soorten lampjes](#-soorten-lampjes)) |
-| **Muziekbron** | Voor het effect *Op de muziek*: het **geluid van de computer** zelf (YouTube, Spotify, ...) of de **microfoon** |
+| **Muziekbron** | Voor het effect *Op de muziek*: het **geluid van de computer** zelf (YouTube, Spotify, ...), de **microfoon** of **beide** (een live **Geluidsniveau**-balk eronder laat zien wat het programma hoort) |
 | **Snelheid** | 1–10, hoe snel het effect loopt |
 | **Grootte** | Grootte van de lampjes (6–40) |
 | **Afstand tussen lampjes** | Afstand tussen de lampjes (20–120) |
@@ -281,6 +281,9 @@ Hoe kan dat zonder klikken tegen te houden? Het programma *luistert* alleen mee 
 
 - **Geluid van de computer** (standaard): de lampjes reageren op alles wat je computer afspeelt, zoals een YouTube-filmpje, Spotify of een spel. Er wordt niets opgenomen: het programma leest alleen de volumemeter die Windows voor je luidsprekers of koptelefoon biedt, en volgt het als je daartussen wisselt.
 - **Microfoon**: de lampjes reageren op geluid in de kamer. De microfoon gaat alleen open als je deze bron kiest *en* de lampjes zichtbaar zijn. Er wordt alleen het **volume** gemeten; er wordt geen geluid opgenomen, bewaard of verstuurd. Staat Windows het niet toe, dan krijg je één melding die wijst naar *Instellingen → Privacy en beveiliging → Microfoon*.
+- **Beide**: de lampjes volgen de luidste van de twee.
+
+Onder de bron toont het instellingenvenster een live **Geluidsniveau**-balk. Beweegt die mee met je muziek, dan dansen de lampjes ook; blijft hij leeg, dan hoort de gekozen bron niets. Alle actieve afspeelapparaten (luidsprekers, koptelefoon, monitor, bluetooth) worden gemeten, dus het maakt niet uit op welke je luistert, en het programma past zich aan zowel zacht als hard volume aan.
 
 ---
 
@@ -340,7 +343,7 @@ Kijk in het systeemvak (het pijltje ^). De lampjes verbergen zichzelf als je een
 Sleep het icoon uit het pijltje ^ naar de taakbalk. Is het er helemaal niet, start het programma dan opnieuw.
 
 **De lampjes dansen niet op mijn muziek.**
-Kies het effect **Op de muziek** en controleer de **Muziekbron**: *Geluid van de computer* volgt wat je computer afspeelt (YouTube, Spotify, ...). Heb je *Microfoon* gekozen, dan horen de lampjes alleen wat de microfoon opvangt, en dat is van je eigen luidsprekers nauwelijks iets. Controleer ook of het geluid niet gedempt of heel zacht staat: zonder geluid blijven de lampjes gedimd.
+Kies het effect **Op de muziek** en controleer de **Muziekbron**: *Geluid van de computer* volgt wat je computer afspeelt (YouTube, Spotify, ...). Heb je *Microfoon* gekozen, dan horen de lampjes alleen wat de microfoon opvangt, en dat is van je eigen luidsprekers nauwelijks iets. Open de instellingen en kijk naar de **Geluidsniveau**-balk: die laat zien wat het programma hoort. Blijft hij leeg, probeer dan de andere bron of *Beide*, en controleer of het geluid niet gedempt staat.
 
 **Hoe verwijder ik het?**
 Kies *Afsluiten* in het menu, haal eerst het vinkje bij *Starten met Windows* weg als je dat had aangezet, en verwijder de `.exe` en de map `%APPDATA%\Kerstlampjes`. Er is geen installatieprogramma, dus er blijft verder niets achter.

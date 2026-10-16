@@ -119,7 +119,7 @@ Every change takes effect immediately and is saved. There are two tabs.
 | **Effect** | Steady, Twinkle, Alternate blinking, Chasing light, Colour wave, or *To the music* (see below) |
 | **Colours** | Classic multicolour, Warm white, Red / green / gold, Ice blue / white, Pink / purple |
 | **Type of lights** | Classic bulbs, Mini LEDs, Glass baubles, Little flames, Little stars, Hearts, Icicles, Snowflakes, or a mix of everything (see [Types of lights](#-types-of-lights)) |
-| **Music source** | For the effect *To the music*: the **sound of the computer** itself (YouTube, Spotify, ...) or the **microphone** |
+| **Music source** | For the effect *To the music*: the **sound of the computer** itself (YouTube, Spotify, ...), the **microphone**, or **both** (a live **Sound level** bar below it shows what the program hears) |
 | **Speed** | 1–10, how fast the effect runs |
 | **Size** | Size of the bulbs (6–40) |
 | **Spacing between lights** | Distance between bulbs (20–120) |
@@ -281,6 +281,9 @@ How is that possible without blocking clicks? The program only *listens* to wher
 
 - **Sound from the computer** (the default): the lights react to whatever your computer is playing, such as a YouTube video, Spotify or a game. Nothing is recorded: the program only reads the volume meter that Windows provides for your speakers or headphones, and it follows when you switch between them.
 - **Microphone**: the lights react to sound in the room. The microphone is only opened when you choose this source *and* the lights are visible. Only the **volume** is measured; no audio is recorded, stored or sent. If Windows does not allow it, you get one message pointing to *Settings → Privacy & security → Microphone*.
+- **Both**: the lights follow whichever of the two is louder.
+
+Under the source, the settings window shows a live **Sound level** bar. If it moves while your music plays, the lights will dance too; if it stays empty, the chosen source is not hearing anything. All active playback devices (speakers, headphones, monitor, Bluetooth) are measured, so it does not matter which one you listen on, and the program adjusts to quiet as well as loud volume.
 
 ---
 
@@ -340,7 +343,7 @@ Look in the system tray (the ^ arrow). The lights hide themselves when you run a
 Drag the icon out of the ^ overflow onto the taskbar. If it is not there at all, start the program again.
 
 **The lights do not dance to my music.**
-Choose the effect **To the music** and check the **Music source**: *Sound from the computer* follows what your computer plays (YouTube, Spotify, ...). If you chose *Microphone*, the lights only hear what the microphone picks up, which is hardly anything of your own speakers. Also check that the sound is not muted or very low: with no sound the lights stay dim.
+Choose the effect **To the music** and check the **Music source**: *Sound from the computer* follows what your computer plays (YouTube, Spotify, ...). If you chose *Microphone*, the lights only hear what the microphone picks up, which is hardly anything of your own speakers. Open the settings and watch the **Sound level** bar: it shows what the program hears. If it stays empty, try the other source or *Both*, and check that the sound is not muted.
 
 **How do I remove it?**
 Choose *Exit* in the tray menu, untick *Start with Windows* first if you ticked it, and delete the `.exe` and the folder `%APPDATA%\Kerstlampjes`. There is no installer, so nothing else is left behind.

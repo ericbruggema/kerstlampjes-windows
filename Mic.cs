@@ -92,8 +92,8 @@ namespace Kerstlampjes
                     sum += v * v;
                 }
                 float rms = n > 0 ? (float)Math.Sqrt(sum / n) : 0f;
-                peak = Math.Max(Math.Max(rms, 0.02f), peak * 0.998f);
-                float lv = Math.Max(0f, Math.Min(1f, (rms - 0.004f) / (peak - 0.004f)));
+                peak = Math.Max(Math.Max(rms, 0.005f), peak * 0.998f);
+                float lv = Math.Max(0f, Math.Min(1f, (rms - 0.0015f) / (peak - 0.0015f)));
                 if (lv > best) best = lv;
                 h.dwBytesRecorded = 0; h.dwFlags &= ~1u;
                 Marshal.StructureToPtr(h, hdrs[i], false);
