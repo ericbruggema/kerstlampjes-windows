@@ -117,6 +117,7 @@ Every change takes effect immediately and is saved. There are two tabs.
 | **Effect** | Steady, Twinkle, Alternate blinking, Chasing light, Colour wave, or *To the music* (see below) |
 | **Colours** | Classic multicolour, Warm white, Red / green / gold, Ice blue / white, Pink / purple |
 | **Type of lights** | Classic bulbs, Mini LEDs, Glass baubles, Little flames, Little stars, Hearts, Icicles, Snowflakes, or a mix of everything (see [Types of lights](#-types-of-lights)) |
+| **Music source** | For the effect *To the music*: the **sound of the computer** itself (YouTube, Spotify, ...) or the **microphone** |
 | **Speed** | 1–10, how fast the effect runs |
 | **Size** | Size of the bulbs (6–40) |
 | **Spacing between lights** | Distance between bulbs (20–120) |
@@ -139,6 +140,7 @@ Tick the decorations you want. The extra options next to a decoration can only b
 | The ten decorations | See [Decorations](#-decorations) |
 | **Snow across the whole screen** | Snow normally falls along the left and right edges only; this lets it fall everywhere |
 | **Fireworks show** | Random, Rockets, Fountains, Mortars, Roman candles, Catherine wheels or Grand show |
+| **Launch fireworks automatically** | Lets the fireworks go off by themselves at random moments. Off (the default): only when you click the fireworks crate or use the menu |
 | **Little train** | Seen from above (along the whole edge) or from the side (along the bottom edge) |
 | **Number of wagons** | 1–8 |
 | **Lights on the train** | Little twinkling lights on the wagons |
@@ -224,7 +226,7 @@ A scrolling sign in the colours of the lights, with your own text (the default i
 
 ## 🎆 Fireworks shows
 
-Switch on **Fireworks** and choose a **Fireworks show**. Everything goes off at random moments from random spots along the bottom edge, and the fireworks are scaled to the size of your screen. The explosions come in several kinds: normal peony, ring, willow (golden sparks that fall slowly), double ring and even a heart.
+Switch on **Fireworks** and choose a **Fireworks show**. Everything goes off from random spots along the bottom edge, and the fireworks are scaled to the size of your screen. The explosions come in several kinds: normal peony, ring, willow (golden sparks that fall slowly), double ring and even a heart.
 
 | Show | What you get | |
 |---|---|---|
@@ -236,7 +238,13 @@ Switch on **Fireworks** and choose a **Fireworks show**. Everything goes off at 
 | **Catherine wheels** | Spinning wheels of sparks on the walls | <img src="docs/fireworks-wheels.jpg" width="260"> |
 | **Grand show** | A choreographed show of about 32 seconds: fountains, mortars, wheels, a fan of rockets, candles, a barrage and a big finale, then a pause | <img src="docs/fireworks-grand.jpg" width="260"> |
 
-You can also start it by hand from the tray menu with **Launch fireworks**: that runs the grand show, or one item of the chosen kind.
+### 🎁 The fireworks crate
+
+Fireworks do not run all the time. With **Fireworks** switched on, a little **fireworks crate** with rockets sticking out of it stands in the bottom right corner, glowing softly to invite a click. **Click the crate** and the chosen show goes off once; the grand show only starts again when the previous one has finished.
+
+<p align="center"><img src="docs/fireworks-crate.png" alt="The fireworks crate in the bottom right corner" width="420"></p>
+
+Prefer a show that runs by itself? Tick **Launch fireworks automatically** and it goes off at random moments. You can also start it from the tray menu with **Launch fireworks**: that runs the grand show, or one item of the chosen kind. Switching **Fireworks** off stops everything immediately.
 
 ---
 
@@ -249,6 +257,7 @@ The lights are drawn in a transparent window that lets **every click and keystro
 | **Click** an icicle | It falls and grows back later |
 | **Click** a shooting star | It explodes in fireworks |
 | **Click** the train | It whistles and puffs |
+| **Click** the fireworks crate | The fireworks go off (the chosen show) |
 | **Click** a penguin / the snowman | The penguin hops / the scarf flutters |
 | **Move the mouse through the snow** | The snow is swept away around the cursor |
 | **Shake the mouse** left and right | All the settled snow flies away |
@@ -266,11 +275,10 @@ How is that possible without blocking clicks? The program only *listens* to wher
 
 <p align="center"><img src="docs/palettes.png" alt="The palettes: classic multicolour, warm white, red green gold, ice blue and white" width="620"><br><sub>Classic multicolour · Warm white · Red / green / gold · Ice blue / white (and Pink / purple)</sub></p>
 
-**To the music** makes the lights react to sound picked up by your **microphone**: the louder it is, the more lights come on, each one with its own threshold. The program adjusts itself to the volume in the room.
+**To the music** makes the lights dance to sound: the louder it is, the more lights come on, each one with its own threshold. The program adjusts itself to the volume. Choose the **Music source**:
 
-- The microphone is only opened when you choose this effect *and* the lights are visible.
-- Only the **volume** is measured. No audio is recorded, stored or sent.
-- If Windows does not allow it, you get one message pointing to *Settings → Privacy & security → Microphone*.
+- **Sound from the computer** (the default): the lights react to whatever your computer is playing, such as a YouTube video, Spotify or a game. Nothing is recorded: the program only reads the volume meter that Windows provides for your speakers or headphones, and it follows when you switch between them.
+- **Microphone**: the lights react to sound in the room. The microphone is only opened when you choose this source *and* the lights are visible. Only the **volume** is measured; no audio is recorded, stored or sent. If Windows does not allow it, you get one message pointing to *Settings → Privacy & security → Microphone*.
 
 ---
 
@@ -288,7 +296,8 @@ How is that possible without blocking clicks? The program only *listens* to wher
 | What | Why | Needs your permission? |
 |---|---|---|
 | **Internet** | Only the update check, when *you* choose *Check for updates* (one request to the GitHub API of this repository) | No, but it only happens when you click |
-| **Microphone** | Only for the effect *To the music*, to measure the volume. Nothing is recorded | Windows may ask / you can block it in its privacy settings |
+| **Sound from the computer** | Only for the effect *To the music*: the volume meter of your speakers, as offered by Windows itself. Nothing is recorded | No |
+| **Microphone** | Only if you choose the source *Microphone* for *To the music*. Nothing is recorded | Windows may ask / you can block it in its privacy settings |
 | **Mouse position** | Only to react to clicks and mouse movements on the decorations (see above). Not recorded, not sent | – |
 | **Registry** | Only if you tick *Start with Windows*: one entry in `HKCU\Software\Microsoft\Windows\CurrentVersion\Run` | Yes, you tick it |
 | **Files** | Your settings in `%APPDATA%\Kerstlampjes\settings.ini` | – |
@@ -327,6 +336,9 @@ Look in the system tray (the ^ arrow). The lights hide themselves when you run a
 
 **I do not see the icon.**
 Drag the icon out of the ^ overflow onto the taskbar. If it is not there at all, start the program again; a second start does nothing, because it is already running.
+
+**The lights do not dance to my music.**
+Choose the effect **To the music** and check the **Music source**: *Sound from the computer* follows what your computer plays (YouTube, Spotify, ...). If you chose *Microphone*, the lights only hear what the microphone picks up, which is hardly anything of your own speakers. Also check that the sound is not muted or very low: with no sound the lights stay dim.
 
 **How do I remove it?**
 Choose *Exit* in the tray menu, untick *Start with Windows* first if you ticked it, and delete the `.exe` and the folder `%APPDATA%\Kerstlampjes`. There is no installer, so nothing else is left behind.

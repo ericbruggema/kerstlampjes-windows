@@ -28,6 +28,8 @@ namespace Kerstlampjes
         public bool Sound = false;
         public bool SnowFull = false;       // sneeuw over het hele scherm (anders alleen aan de zijkanten)
         public int BulbStyle = 0;           // soort lampjes, zie BulbStyles
+        public bool AutoFireworks = false;  // vuurwerk vanzelf laten afgaan (anders alleen via de kist of het menu)
+        public int MusicSource = 0;         // 0 = geluid van de computer, 1 = microfoon
         public int FireShow = 0;            // zie FireShows
         public bool DesktopOnly = false;    // alleen op het bureaublad, niet boven programma's
         public string Marquee = "";         // tekst van de lichtkrant (leeg = standaardtekst)
@@ -84,6 +86,8 @@ namespace Kerstlampjes
                         case "desktoponly": s.DesktopOnly = v == "1"; break;
                         case "snowfull": s.SnowFull = v == "1"; break;
                         case "bulbstyle": s.BulbStyle = Clamp(v, 0, BulbStyles.Mix, s.BulbStyle); break;
+                        case "autofire": s.AutoFireworks = v == "1"; break;
+                        case "musicsource": s.MusicSource = Clamp(v, 0, 1, s.MusicSource); break;
                         case "fireshow": s.FireShow = Clamp(v, 0, FireShows.Names.Length - 1, s.FireShow); break;
                         case "marquee": s.Marquee = v.Length > 80 ? v.Substring(0, 80) : v; break;
                     }
@@ -106,7 +110,7 @@ namespace Kerstlampjes
                     "hidefullscreen=" + (HideFullscreen ? 1 : 0), "decor=" + DecorMask,
                     "trainside=" + (TrainSide ? 1 : 0), "wagons=" + TrainWagons, "trainlights=" + (TrainLights ? 1 : 0),
                     "garlandballs=" + (GarlandBalls ? 1 : 0), "showlights=" + (ShowLights ? 1 : 0),
-                    "sound=" + (Sound ? 1 : 0), "desktoponly=" + (DesktopOnly ? 1 : 0), "fireshow=" + FireShow, "bulbstyle=" + BulbStyle, "snowfull=" + (SnowFull ? 1 : 0), "marquee=" + (Marquee ?? "").Replace('\r', ' ').Replace('\n', ' ')
+                    "sound=" + (Sound ? 1 : 0), "desktoponly=" + (DesktopOnly ? 1 : 0), "fireshow=" + FireShow, "autofire=" + (AutoFireworks ? 1 : 0), "musicsource=" + MusicSource, "bulbstyle=" + BulbStyle, "snowfull=" + (SnowFull ? 1 : 0), "marquee=" + (Marquee ?? "").Replace('\r', ' ').Replace('\n', ' ')
                 });
             }
             catch { /* niet kunnen opslaan is niet erg */ }

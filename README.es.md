@@ -86,12 +86,12 @@ Una pequeña app solo con las luces: una guirnalda a lo largo del borde de tu pa
 - **Encender/apagar:** clic izquierdo en el icono. **Clic derecho** abre el menú: ajustes, iniciar con Windows, buscar actualizaciones, acerca de y salir.
 - **Ajustes:** efecto (fijo, parpadeo suave, alterno, luz corredora, ola de color), colores, velocidad, tamaño, separación, redondeo de esquinas, distancia al borde, caída del cable, opacidad. También todas las pantallas o solo la principal.
 - **Decoración:** la misma que en Android (trenecito, nieve, fuegos artificiales, carámbanos, guirnalda, trineo, pingüinos, letrero luminoso), que se activa por separado en los ajustes. Haz clic en los carámbanos, las estrellas fugaces, el tren o los pingüinos y reaccionan; tu clic sigue pasando a la ventana de debajo.
-- **Espectáculo de fuegos artificiales:** elige fuegos aleatorios o un tipo: cohetes, fuentes, morteros, velas romanas, ruedas de fuego o un gran espectáculo coreografiado (unos 32 segundos, luego una pausa). Salen en lugares aleatorios del borde inferior; también puedes lanzarlo a mano desde el menú.
+- **Espectáculo de fuegos artificiales:** elige fuegos aleatorios o un tipo: cohetes, fuentes, morteros, velas romanas, ruedas de fuego o un gran espectáculo coreografiado (unos 32 segundos, luego una pausa). Salen en lugares aleatorios del borde inferior; se lanza con un clic en la **caja de fuegos artificiales** (abajo a la derecha) o desde el menú; el lanzamiento automático es una opción aparte.
 - **Nieve:** cae por los lados de forma predeterminada; también puedes hacerla caer por toda la pantalla. La opción de bolas en la guirnalda solo se puede elegir cuando la guirnalda está activada.
 - **Quitar la nieve:** pasa el ratón por la nieve, agítalo de lado a lado o elige *Barrer la nieve* en el menú.
 - **Solo en el escritorio:** una opción para mostrar las luces solo cuando ves el escritorio, no sobre los programas.
 - **Se oculta** con apps a pantalla completa (juegos, películas, presentaciones).
-- **Con la música:** un efecto que reacciona al sonido mediante el micrófono. El micrófono solo está abierto si eliges ese efecto; no se guarda ni se envía nada, solo se mide el volumen.
+- **Con la música:** un efecto en el que las luces bailan al ritmo del sonido. La fuente predeterminada es el **sonido del ordenador** (YouTube, Spotify, juegos): no se graba nada, solo se lee el medidor de volumen de Windows. Alternativamente, la fuente **micrófono**: el micrófono solo está abierto si la eliges; no se guarda ni se envía nada, solo se mide el volumen.
 - **Privacidad:** nada pasa por internet, salvo que elijas «Buscar actualizaciones». Los ajustes están en `%APPDATA%\Kerstlampjes`.
 - **Idiomas:** sigue el idioma de Windows (Nederlands, English, Deutsch, Français, Español, 中文).
 - **Windows SmartScreen:** el archivo no está firmado digitalmente; en la advertencia elige *Más información* → *Ejecutar de todas formas*.

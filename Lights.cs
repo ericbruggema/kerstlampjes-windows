@@ -192,7 +192,7 @@ namespace Kerstlampjes
                     {
                         // elk lampje heeft een eigen drempel: hoe harder het geluid, hoe meer er aangaan
                         float th = ((i * 37) % 100) / 100f;
-                        float k = Clamp01((MicLevel.Level * 1.5f - th * 0.9f) / 0.25f);
+                        float k = Clamp01(((s.MusicSource == 1 ? MicLevel.Level : SystemAudio.Level) * 1.5f - th * 0.9f) / 0.25f);
                         return 0.12f + 0.88f * k;
                     }
                 default: // Twinkle

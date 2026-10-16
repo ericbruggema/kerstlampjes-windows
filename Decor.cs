@@ -378,6 +378,7 @@ namespace Kerstlampjes
                     return true;
                 }
             }
+            if (On(Decor.Fireworks) && HitCrate(x, y)) { PressCrate(); return true; }
             if (FireworksOnAnyClick && On(Decor.Fireworks)) { Burst(x, y); return true; }
             return false;
         }
@@ -674,6 +675,7 @@ namespace Kerstlampjes
         {
             if (w <= 0) return;
             if (On(Decor.Walkers)) DrawWalkers(g);
+            if (On(Decor.Fireworks)) DrawCrate(g);
             if (On(Decor.Train)) DrawTrain(g);
             if (On(Decor.Marquee)) DrawMarquee(g);
             if (On(Decor.Snow)) DrawSnow(g);

@@ -189,7 +189,11 @@ namespace Kerstlampjes
         /// <summary>De microfoon staat alleen open bij het effect "Op de muziek" terwijl de lampjes zichtbaar zijn.</summary>
         void UpdateMic()
         {
-            bool want = s.Mode == Modes.Music && s.On && !hiddenByFullscreen;
+            bool wantAny = s.Mode == Modes.Music && s.On && !hiddenByFullscreen;
+            bool want = wantAny && s.MusicSource == 1;
+            bool wantSys = wantAny && s.MusicSource != 1;
+            if (wantSys && !SystemAudio.Running) SystemAudio.Start();
+            else if (!wantSys && SystemAudio.Running) SystemAudio.Stop();
             if (want && !MicLevel.Running)
             {
                 if (!MicLevel.Start() && !micWarned)
@@ -257,6 +261,7 @@ namespace Kerstlampjes
             if (!s.On || hiddenByFullscreen) { clicks.Clear(); return; }
             HandleMouse();
             MicLevel.Poll();
+            SystemAudio.Poll();
             bool animated = overlays.Count > 0 && overlays[0].Animated;
             // Vast licht verandert niet: alleen opnieuw tekenen als er iets gewijzigd is.
             if (!animated && !dirty) return;
@@ -369,6 +374,7 @@ namespace Kerstlampjes
         {
             frame.Stop(); slow.Stop();
             MicLevel.Stop();
+            SystemAudio.Stop();
             if (hook != IntPtr.Zero) { Native.UnhookWindowsHookEx(hook); hook = IntPtr.Zero; }
             foreach (var o in overlays) o.Dispose();
             settingsForm?.Dispose();

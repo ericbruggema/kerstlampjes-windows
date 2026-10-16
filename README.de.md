@@ -86,11 +86,12 @@ Eine kleine App nur mit den Lichtern: eine Kette am Rand deines Bildschirms (üb
 - **An/aus:** Linksklick auf das Symbol. **Rechtsklick** öffnet das Menü: Einstellungen, mit Windows starten, nach Updates suchen, Über und Beenden.
 - **Einstellungen:** Effekt (Dauerlicht, Funkeln, abwechselnd, Lauflicht, Farbwelle), Farben, Geschwindigkeit, Größe, Abstand, Eckenrundung, Randabstand, Durchhang, Deckkraft. Auch alle Bildschirme oder nur der Hauptbildschirm.
 - **Dekoration:** dieselbe wie auf Android (kleiner Zug, Schnee, Feuerwerk, Eiszapfen, Girlande, Schlitten, Pinguine, Laufschrift), einzeln in den Einstellungen einzuschalten. Klicke auf Eiszapfen, Sternschnuppen, den Zug oder die Pinguine, dann reagieren sie; dein Klick geht trotzdem ans Fenster darunter.
-- **Feuerwerksshow:** wähle zufälliges Feuerwerk oder eine Art: Raketen, Fontänen, Mörser, Römische Lichter, Feuerräder oder eine choreografierte große Show (etwa 32 Sekunden, danach eine Pause). Es geht an zufälligen Stellen am unteren Rand los; von Hand zünden geht über das Menü.
+- **Feuerwerksshow:** wähle zufälliges Feuerwerk oder eine Art: Raketen, Fontänen, Mörser, Römische Lichter, Feuerräder oder eine choreografierte große Show (etwa 32 Sekunden, danach eine Pause). Es geht an zufälligen Stellen am unteren Rand los; gezündet wird per Klick auf die **Feuerwerkskiste** (unten rechts) oder über das Menü; automatisches Zünden ist eine eigene Option.
 - **Schnee:** fällt standardmäßig an den Seiten; du kannst ihn auch über den ganzen Bildschirm fallen lassen. Die Option Kugeln an der Girlande ist erst wählbar, wenn die Girlande an ist.
 - **Schnee entfernen:** fahre mit der Maus durch den Schnee, schüttle die Maus hin und her oder wähle im Menü *Schnee wegfegen*.
 - **Nur auf dem Desktop:** eine Option, die Lichter nur zu zeigen, wenn du den Desktop siehst, nicht über Programmen.
 - **Blendet sich aus** bei Vollbild-Apps (Spiele, Filme, Präsentationen).
+- **Zur Musik:** ein Effekt, bei dem die Lichter zum Ton tanzen. Standardquelle ist der **Ton des Computers** (YouTube, Spotify, Spiele): es wird nichts aufgenommen, nur die Lautstärkeanzeige von Windows gelesen. Alternativ die **Mikrofon**-Quelle: das Mikrofon ist nur offen, wenn du sie wählst; nichts wird gespeichert oder gesendet, es wird nur die Lautstärke gemessen.
 - **Datenschutz:** nichts geht über das Internet, außer du wählst „Nach Updates suchen“. Einstellungen liegen in `%APPDATA%\Kerstlampjes`.
 - **Sprachen:** folgt der Windows-Sprache (Nederlands, English, Deutsch, Français, Español, 中文).
 - **Windows SmartScreen:** die Datei ist nicht digital signiert; bei der Warnung *Weitere Informationen* → *Trotzdem ausführen* wählen.

@@ -24,6 +24,7 @@ namespace Kerstlampjes
         readonly List<Shot> queue = new List<Shot>();
         readonly List<Emitter> emitters = new List<Emitter>();
         long lastBoomMs;
+        bool fireWasOn;
 
         /// <summary>Op grote schermen is het vuurwerk groter, anders valt het weg.</summary>
         float Fw { get { return Math.Max(1f, Math.Min(1.8f, Math.Min(w, h * 1.6f) / 1000f)); } }
@@ -138,7 +139,10 @@ namespace Kerstlampjes
 
         void UpdateFireworks(float dt)
         {
-            if (On(Decor.Fireworks))
+            bool fireNow = On(Decor.Fireworks);
+            if (fireWasOn && !fireNow) { queue.Clear(); rockets.Clear(); emitters.Clear(); sparks.Clear(); } // uitzetten: meteen stoppen
+            fireWasOn = fireNow;
+            if (fireNow && s.AutoFireworks)
             {
                 fireT -= dt;
                 if (fireT <= 0f)

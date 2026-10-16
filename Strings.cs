@@ -115,6 +115,10 @@ namespace Kerstlampjes
             { "IJspegels", new[] { "Icicles", "Eiszapfen", "Glaçons", "Carámbanos", "冰柱" } },
             { "Sneeuwvlokken", new[] { "Snowflakes", "Schneeflocken", "Flocons de neige", "Copos de nieve", "雪花" } },
             { "Mix van alles", new[] { "Mix of everything", "Alles gemischt", "Un peu de tout", "Mezcla de todo", "全部混搭" } },
+            { "Muziekbron", new[] { "Music source", "Musikquelle", "Source de la musique", "Fuente de música", "音乐来源" } },
+            { "Geluid van de computer", new[] { "Sound from the computer", "Ton des Computers", "Son de l'ordinateur", "Sonido del ordenador", "电脑的声音" } },
+            { "Microfoon", new[] { "Microphone", "Mikrofon", "Microphone", "Micrófono", "麦克风" } },
+            { "Vuurwerk automatisch afsteken", new[] { "Launch fireworks automatically", "Feuerwerk automatisch zünden", "Lancer les feux automatiquement", "Lanzar fuegos artificiales automáticamente", "自动放烟花" } },
             { "Versie", new[] { "Version", "Version", "Version", "Versión", "版本" } },
             { "Website en broncode", new[] { "Website and source code", "Website und Quellcode", "Site web et code source", "Sitio web y código fuente", "网站与源代码" } },
         };
