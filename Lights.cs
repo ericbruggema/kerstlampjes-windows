@@ -28,12 +28,17 @@ namespace Kerstlampjes
         readonly SolidBrush socketBrush = new SolidBrush(Color.FromArgb(0x2B, 0x3A, 0x30));
         Pen wirePen;
 
-        public bool Animated { get { return s.Mode != Modes.Steady; } }
+        readonly RimDecor fx = new RimDecor();
+        /// <summary>De versiering (trein, sneeuw, vuurwerk, ...) voor klikken en andere bediening.</summary>
+        public RimDecor Fx { get { return fx; } }
+
+        public bool Animated { get { return s.Mode != Modes.Steady || fx.Active; } }
 
         public void Rebuild(Settings settings, int width, int height, float dpiScale)
         {
             s = settings.Clone();
             w = width; h = height; scale = dpiScale;
+            fx.Layout(s, w, h, scale);
             Dispose(false);
             if (w <= 0 || h <= 0) return;
 
@@ -82,6 +87,13 @@ namespace Kerstlampjes
             }
             wirePen = new Pen(Color.FromArgb(0x1F, 0x4D, 0x2B), Math.Max(1.5f, size * 0.14f))
             { StartCap = LineCap.Round, EndCap = LineCap.Round };
+            var layer = fx.StaticLayer;
+            if (layer != null && s.ShowLights)
+                using (var g2 = Graphics.FromImage(layer))
+                {
+                    g2.SmoothingMode = SmoothingMode.AntiAlias;
+                    g2.DrawPath(wirePen, wire);
+                }
 
             // Glazen lampje in lokale coördinaten (fitting op y=0, lampje wijst naar +y)
             float socketH = size * 0.45f, bw = size * 0.5f, bh = size * 1.35f, top = socketH * 0.9f;
@@ -91,6 +103,7 @@ namespace Kerstlampjes
             glass.CloseFigure();
             glassCenterY = top + bh * 0.5f;
             glowRadius = size * 2.4f;
+            spriteD = (int)Math.Ceiling(2f * (glassCenterY + glowRadius)) + 4;
 
             // Gloed: voor elke kleur een paar vooraf getekende helderheidsniveaus
             int d = Math.Max(2, (int)Math.Ceiling(glowRadius * 2));
@@ -187,40 +200,61 @@ namespace Kerstlampjes
 
         public void Draw(Graphics g, float t)
         {
-            if (count == 0 || wire == null) return;
             g.SmoothingMode = SmoothingMode.AntiAlias;
-            var palette = Palettes.Colors[s.Palette];
-            float socketW = size * 0.42f, socketH = size * 0.45f;
-            int waveShift = s.Mode == Modes.Wave ? (int)(t * s.Speed / 5f * 1.5f) : 0;
-            int d = glow[0][0].Width;
+            fx.Update();
+            fx.DrawBack(g);
+            if (s.ShowLights) DrawLights(g, t);
+            fx.DrawFront(g);
+        }
 
-            g.DrawPath(wirePen, wire);
+        // Elk lampje (gloed, fitting, glas en glimlicht) wordt per kleur, helderheid en hoek
+        // een keer getekend en daarna als plaatje op het scherm gezet: dat is veel sneller.
+        const int Levels = 8, AngleStep = 15;
+        readonly System.Collections.Generic.Dictionary<int, Bitmap> sprites = new System.Collections.Generic.Dictionary<int, Bitmap>();
+        int spriteD;
+
+        Bitmap Sprite(int ci, int level, int bucket)
+        {
+            int key = (ci * Levels + level) * 64 + bucket;
+            Bitmap bmp;
+            if (sprites.TryGetValue(key, out bmp)) return bmp;
+            if (sprites.Count > 900) { foreach (var b in sprites.Values) b.Dispose(); sprites.Clear(); }
+            var palette = Palettes.Colors[s.Palette];
+            var baseCol = Color.FromArgb(palette[ci]);
+            float k = level / (float)(Levels - 1);
+            float socketW = size * 0.42f, socketH = size * 0.45f;
+            bmp = new Bitmap(spriteD, spriteD, PixelFormat.Format32bppPArgb);
+            using (var g = Graphics.FromImage(bmp))
+            {
+                g.SmoothingMode = SmoothingMode.AntiAlias;
+                g.TranslateTransform(spriteD / 2f, spriteD / 2f);
+                g.RotateTransform(bucket * AngleStep);
+                int gl = Math.Min(GlowLevels - 1, (int)(k * k * GlowLevels));
+                int gd = glow[ci][gl].Width;
+                g.DrawImageUnscaled(glow[ci][gl], (int)(-gd / 2f), (int)(glassCenterY - gd / 2f));
+                g.FillRectangle(socketBrush, -socketW / 2, 0, socketW, socketH);
+                brush.Color = Lerp(Darken(baseCol), baseCol, k);
+                g.FillPath(brush, glass);
+                brush.Color = Color.FromArgb((int)(60 + 140 * k), 255, 255, 255);
+                g.FillEllipse(brush, -size * 0.28f, socketH + size * 0.15f, size * 0.2f, size * 0.5f);
+            }
+            sprites[key] = bmp;
+            return bmp;
+        }
+
+        void DrawLights(Graphics g, float t)
+        {
+            if (count == 0 || wire == null) return;
+            var palette = Palettes.Colors[s.Palette];
+            int waveShift = s.Mode == Modes.Wave ? (int)(t * s.Speed / 5f * 1.5f) : 0;
+            int half = spriteD / 2, buckets = 360 / AngleStep;
 
             for (int i = 0; i < count; i++)
             {
                 int ci = (colorIdx[i] + waveShift) % palette.Length;
-                var baseCol = Color.FromArgb(palette[ci]);
-                float k = Intensity(i, t);
-
-                g.TranslateTransform(px[i], py[i]);
-                g.RotateTransform(ang[i]);
-
-                // gloed
-                int level = Math.Min(GlowLevels - 1, (int)(k * k * GlowLevels));
-                g.DrawImageUnscaled(glow[ci][level], (int)(-d / 2f), (int)(glassCenterY - d / 2f));
-
-                // fitting
-                g.FillRectangle(socketBrush, -socketW / 2, 0, socketW, socketH);
-
-                // glas
-                brush.Color = Lerp(Darken(baseCol), baseCol, k);
-                g.FillPath(brush, glass);
-
-                // glimlicht
-                brush.Color = Color.FromArgb((int)(60 + 140 * k), 255, 255, 255);
-                g.FillEllipse(brush, -size * 0.28f, socketH + size * 0.15f, size * 0.2f, size * 0.5f);
-
-                g.ResetTransform();
+                int level = Math.Max(0, Math.Min(Levels - 1, (int)Math.Round(Intensity(i, t) * (Levels - 1))));
+                int bucket = ((int)Math.Round(ang[i] / AngleStep) % buckets + buckets) % buckets;
+                g.DrawImageUnscaled(Sprite(ci, level, bucket), (int)Math.Round(px[i]) - half, (int)Math.Round(py[i]) - half);
             }
         }
 
@@ -242,8 +276,10 @@ namespace Kerstlampjes
             if (wirePen != null) { wirePen.Dispose(); wirePen = null; }
             foreach (var row in glow) foreach (var b in row) if (b != null) b.Dispose();
             glow = new Bitmap[0][];
+            foreach (var b in sprites.Values) b.Dispose();
+            sprites.Clear();
             count = 0;
-            if (all) { brush.Dispose(); socketBrush.Dispose(); }
+            if (all) { brush.Dispose(); socketBrush.Dispose(); fx.Dispose(); }
         }
 
         public void Dispose() { Dispose(true); }

@@ -27,6 +27,8 @@ namespace Kerstlampjes
         [DllImport("user32.dll", SetLastError = true)]
         public static extern bool UpdateLayeredWindow(IntPtr hwnd, IntPtr hdcDst, ref POINT pptDst, ref SIZE psize,
             IntPtr hdcSrc, ref POINT pptSrc, int crKey, ref BLENDFUNCTION pblend, int dwFlags);
+        [DllImport("kernel32.dll", EntryPoint = "RtlMoveMemory")]
+        public static extern void CopyMemory(IntPtr dst, IntPtr src, UIntPtr length);
         [DllImport("user32.dll")] public static extern IntPtr GetDC(IntPtr hwnd);
         [DllImport("user32.dll")] public static extern int ReleaseDC(IntPtr hwnd, IntPtr hdc);
         [DllImport("user32.dll")]
@@ -40,6 +42,37 @@ namespace Kerstlampjes
         public static extern IntPtr CreateDIBSection(IntPtr hdc, ref BITMAPINFOHEADER bmi, uint usage,
             out IntPtr bits, IntPtr section, uint offset);
         [DllImport("shell32.dll")] public static extern int SHQueryUserNotificationState(out int state);
+        [DllImport("user32.dll")] static extern IntPtr GetForegroundWindow();
+        [DllImport("user32.dll")] static extern uint GetWindowThreadProcessId(IntPtr hwnd, out uint pid);
+        [DllImport("user32.dll", CharSet = CharSet.Unicode)] static extern int GetClassName(IntPtr hwnd, System.Text.StringBuilder name, int max);
+
+        /// <summary>True als je het bureaublad (of de taakbalk, of dit programma zelf) voorop ziet, dus geen ander programma.</summary>
+        public static bool DesktopInFront()
+        {
+            IntPtr fg = GetForegroundWindow();
+            if (fg == IntPtr.Zero) return true;
+            uint pid; GetWindowThreadProcessId(fg, out pid);
+            if (pid == (uint)System.Diagnostics.Process.GetCurrentProcess().Id) return true;
+            var sb = new System.Text.StringBuilder(64);
+            GetClassName(fg, sb, sb.Capacity);
+            switch (sb.ToString())
+            {
+                case "Progman": case "WorkerW": case "Shell_TrayWnd": case "Shell_SecondaryTrayWnd":
+                case "NotifyIconOverflowWindow": case "TopLevelWindowForOverflowXamlIsland":
+                    return true;
+            }
+            return false;
+        }
+
+        // Muisklikken meelezen zonder ze tegen te houden (laag-niveau muishaak)
+        public delegate IntPtr HookProc(int code, IntPtr wParam, IntPtr lParam);
+        [DllImport("user32.dll", SetLastError = true)]
+        public static extern IntPtr SetWindowsHookEx(int id, HookProc cb, IntPtr hMod, uint threadId);
+        [DllImport("user32.dll")] public static extern bool UnhookWindowsHookEx(IntPtr hook);
+        [DllImport("user32.dll")] public static extern IntPtr CallNextHookEx(IntPtr hook, int code, IntPtr wParam, IntPtr lParam);
+        [DllImport("kernel32.dll", CharSet = CharSet.Unicode)] public static extern IntPtr GetModuleHandle(string name);
+        [StructLayout(LayoutKind.Sequential)]
+        public struct MSLLHOOKSTRUCT { public POINT pt; public uint mouseData, flags, time; public IntPtr extra; }
     }
 
     /// <summary>
@@ -53,6 +86,7 @@ namespace Kerstlampjes
         Bitmap bmp;
         Graphics gfx;
         int bw, bh;
+        IntPtr bitsPtr;
         byte alpha = 255;
 
         public Overlay(Rectangle bounds)
@@ -78,6 +112,7 @@ namespace Kerstlampjes
         }
 
         public bool Animated { get { return renderer.Animated; } }
+        public RimDecor Fx { get { return renderer.Fx; } }
 
         /// <summary>Opnieuw opbouwen na een wijziging van instellingen of schermgrootte.</summary>
         public void Apply(Settings s)
@@ -104,6 +139,7 @@ namespace Kerstlampjes
             IntPtr bits;
             dib = Native.CreateDIBSection(memDC, ref hdr, 0, out bits, IntPtr.Zero, 0);
             oldObj = Native.SelectObject(memDC, dib);
+            bitsPtr = bits;
             bmp = new Bitmap(bw, bh, bw * 4, PixelFormat.Format32bppPArgb, bits);
             gfx = Graphics.FromImage(bmp);
         }
@@ -111,7 +147,14 @@ namespace Kerstlampjes
         public void Render(float t)
         {
             if (gfx == null || !IsHandleCreated) return;
-            gfx.Clear(Color.Transparent);
+            var layer = renderer.Fx.StaticLayer;
+            if (layer != null && layer.Width == bw && layer.Height == bh)
+            {
+                var bd = layer.LockBits(new Rectangle(0, 0, bw, bh), ImageLockMode.ReadOnly, PixelFormat.Format32bppPArgb);
+                Native.CopyMemory(bitsPtr, bd.Scan0, (UIntPtr)(uint)(bw * bh * 4));
+                layer.UnlockBits(bd);
+            }
+            else gfx.Clear(Color.Transparent);
             renderer.Draw(gfx, t);
 
             var dst = new Native.POINT { x = Left, y = Top };

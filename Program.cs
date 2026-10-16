@@ -77,12 +77,17 @@ namespace Kerstlampjes
         readonly NotifyIcon tray = new NotifyIcon();
         readonly List<Overlay> overlays = new List<Overlay>();
         readonly System.Windows.Forms.Timer frame = new System.Windows.Forms.Timer { Interval = 40 };
-        readonly System.Windows.Forms.Timer slow = new System.Windows.Forms.Timer { Interval = 2000 };
+        readonly System.Windows.Forms.Timer slow = new System.Windows.Forms.Timer { Interval = 500 };
         readonly Stopwatch clock = Stopwatch.StartNew();
         readonly ToolStripMenuItem onItem, autoItem;
         SettingsForm settingsForm;
         bool hiddenByFullscreen, rebuildPending, dirty = true;
         Icon iconOn, iconOff;
+        IntPtr hook;
+        Native.HookProc hookProc;
+        readonly Queue<Point> clicks = new Queue<Point>();
+        int lastX, lastDir, reversals;
+        long wiggleStart;
 
         public TrayApp()
         {
@@ -94,6 +99,12 @@ namespace Kerstlampjes
             onItem.Click += delegate { Toggle(); };
             var settingsItem = new ToolStripMenuItem(Tr.t("Instellingen…"));
             settingsItem.Click += delegate { ShowSettings(); };
+            var fireItem = new ToolStripMenuItem(Tr.t("Vuurwerk afsteken"));
+            fireItem.Click += delegate { foreach (var o in overlays) o.Fx.LaunchFirework(); };
+            var icicleItem = new ToolStripMenuItem(Tr.t("Ijspegels laten vallen"));
+            icicleItem.Click += delegate { foreach (var o in overlays) o.Fx.DropIcicles(); };
+            var snowItem = new ToolStripMenuItem(Tr.t("Sneeuw wegvegen"));
+            snowItem.Click += delegate { foreach (var o in overlays) o.Fx.Shake(); };
             autoItem = new ToolStripMenuItem(Tr.t("Starten met Windows"));
             autoItem.Click += delegate { SetAutostart(!GetAutostart()); };
             var updItem = new ToolStripMenuItem(Tr.t("Controleren op updates"));
@@ -104,7 +115,7 @@ namespace Kerstlampjes
             exitItem.Click += delegate { ExitThread(); };
             menu.Items.AddRange(new ToolStripItem[]
             {
-                onItem, settingsItem, new ToolStripSeparator(), autoItem, updItem, aboutItem,
+                onItem, settingsItem, new ToolStripSeparator(), fireItem, icicleItem, snowItem, new ToolStripSeparator(), autoItem, updItem, aboutItem,
                 new ToolStripSeparator(), exitItem
             });
             menu.Opening += delegate
@@ -124,6 +135,8 @@ namespace Kerstlampjes
             Microsoft.Win32.SystemEvents.DisplaySettingsChanged += delegate { rebuildPending = true; };
 
             RebuildOverlays();
+            hookProc = MouseHook;
+            hook = Native.SetWindowsHookEx(14, hookProc, Native.GetModuleHandle(Process.GetCurrentProcess().MainModule.ModuleName), 0);
             frame.Start();
             slow.Start();
         }
@@ -179,11 +192,49 @@ namespace Kerstlampjes
             dirty = true;
         }
 
+        // Muisklikken lezen we mee zonder ze tegen te houden: ze gaan altijd door naar het venster eronder.
+        IntPtr MouseHook(int code, IntPtr wParam, IntPtr lParam)
+        {
+            if (code >= 0 && wParam.ToInt32() == 0x201) // WM_LBUTTONDOWN
+            {
+                var info = (Native.MSLLHOOKSTRUCT)System.Runtime.InteropServices.Marshal.PtrToStructure(lParam, typeof(Native.MSLLHOOKSTRUCT));
+                if (clicks.Count < 8) clicks.Enqueue(new Point(info.pt.x, info.pt.y));
+            }
+            return Native.CallNextHookEx(hook, code, wParam, lParam);
+        }
+
+        void HandleMouse()
+        {
+            while (clicks.Count > 0)
+            {
+                var pt = clicks.Dequeue();
+                foreach (var o in overlays)
+                    if (o.Bounds.Contains(pt) && o.Fx.Click(pt.X - o.Left, pt.Y - o.Top)) { dirty = true; break; }
+            }
+            if ((s.DecorMask & Decor.Pile) == 0) return;
+            var pos = Cursor.Position;
+            // de muis door de sneeuw halen veegt hem weg
+            foreach (var o in overlays)
+                if (o.Bounds.Contains(pos)) o.Fx.Plow(pos.X - o.Left, pos.Y - o.Top);
+            // de muis heen en weer schudden haalt alle sneeuw weg
+            int dx = pos.X - lastX; lastX = pos.X;
+            long now = clock.ElapsedMilliseconds;
+            if (Math.Abs(dx) > 30)
+            {
+                int dir = dx > 0 ? 1 : -1;
+                if (lastDir != 0 && dir != lastDir) { if (reversals == 0) wiggleStart = now; reversals++; }
+                lastDir = dir;
+            }
+            if (reversals > 0 && now - wiggleStart > 900) reversals = 0;
+            if (reversals >= 6) { reversals = 0; foreach (var o in overlays) o.Fx.Shake(); }
+        }
+
         void Tick()
         {
             if (rebuildPending) { rebuildPending = false; RebuildOverlays(); }
-            if (!s.On || hiddenByFullscreen) return;
-            bool animated = s.Mode != Modes.Steady;
+            if (!s.On || hiddenByFullscreen) { clicks.Clear(); return; }
+            HandleMouse();
+            bool animated = overlays.Count > 0 && overlays[0].Animated;
             // Vast licht verandert niet: alleen opnieuw tekenen als er iets gewijzigd is.
             if (!animated && !dirty) return;
             dirty = false;
@@ -200,6 +251,7 @@ namespace Kerstlampjes
                 // 2 = volledig scherm, 3 = Direct3D-volledig scherm, 4 = presentatie
                 if (Native.SHQueryUserNotificationState(out state) == 0) full = state == 2 || state == 3 || state == 4;
             }
+            if (s.DesktopOnly && !Native.DesktopInFront()) full = true;
             if (full != hiddenByFullscreen) { hiddenByFullscreen = full; ApplyVisibility(); }
             else if (s.On && !full) foreach (var o in overlays) o.KeepOnTop();
         }
@@ -292,6 +344,7 @@ namespace Kerstlampjes
         protected override void ExitThreadCore()
         {
             frame.Stop(); slow.Stop();
+            if (hook != IntPtr.Zero) { Native.UnhookWindowsHookEx(hook); hook = IntPtr.Zero; }
             foreach (var o in overlays) o.Dispose();
             settingsForm?.Dispose();
             tray.Visible = false;

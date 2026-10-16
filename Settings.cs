@@ -19,6 +19,15 @@ namespace Kerstlampjes
         public bool On = true;
         public bool AllScreens = true;
         public bool HideFullscreen = true;
+        public int DecorMask = 0;           // versiering, bitmasker van Decor
+        public bool TrainSide = false;      // trein van opzij (anders van boven)
+        public int TrainWagons = 3;
+        public bool TrainLights = true;
+        public bool GarlandBalls = true;
+        public bool ShowLights = true;
+        public bool Sound = false;
+        public bool DesktopOnly = false;    // alleen op het bureaublad, niet boven programma's
+        public string Marquee = "";         // tekst van de lichtkrant (leeg = standaardtekst)
 
         public Settings Clone() { return (Settings)MemberwiseClone(); }
 
@@ -62,6 +71,15 @@ namespace Kerstlampjes
                         case "on": s.On = v != "0"; break;
                         case "allscreens": s.AllScreens = v != "0"; break;
                         case "hidefullscreen": s.HideFullscreen = v != "0"; break;
+                        case "decor": s.DecorMask = Clamp(v, 0, Decor.All, s.DecorMask); break;
+                        case "trainside": s.TrainSide = v == "1"; break;
+                        case "wagons": s.TrainWagons = Clamp(v, 1, 8, s.TrainWagons); break;
+                        case "trainlights": s.TrainLights = v != "0"; break;
+                        case "garlandballs": s.GarlandBalls = v != "0"; break;
+                        case "showlights": s.ShowLights = v != "0"; break;
+                        case "sound": s.Sound = v == "1"; break;
+                        case "desktoponly": s.DesktopOnly = v == "1"; break;
+                        case "marquee": s.Marquee = v.Length > 80 ? v.Substring(0, 80) : v; break;
                     }
                 }
             }
@@ -79,7 +97,10 @@ namespace Kerstlampjes
                     "size=" + Size, "spacing=" + Spacing, "speed=" + Speed, "mode=" + Mode,
                     "palette=" + Palette, "corner=" + Corner, "inset=" + Inset, "opacity=" + Opacity,
                     "sag=" + Sag, "on=" + (On ? 1 : 0), "allscreens=" + (AllScreens ? 1 : 0),
-                    "hidefullscreen=" + (HideFullscreen ? 1 : 0)
+                    "hidefullscreen=" + (HideFullscreen ? 1 : 0), "decor=" + DecorMask,
+                    "trainside=" + (TrainSide ? 1 : 0), "wagons=" + TrainWagons, "trainlights=" + (TrainLights ? 1 : 0),
+                    "garlandballs=" + (GarlandBalls ? 1 : 0), "showlights=" + (ShowLights ? 1 : 0),
+                    "sound=" + (Sound ? 1 : 0), "desktoponly=" + (DesktopOnly ? 1 : 0), "marquee=" + (Marquee ?? "").Replace('\r', ' ').Replace('\n', ' ')
                 });
             }
             catch { /* niet kunnen opslaan is niet erg */ }
