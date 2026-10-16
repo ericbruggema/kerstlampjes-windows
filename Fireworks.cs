@@ -25,6 +25,10 @@ namespace Kerstlampjes
         readonly List<Emitter> emitters = new List<Emitter>();
         long lastBoomMs;
 
+        /// <summary>Op grote schermen is het vuurwerk groter, anders valt het weg.</summary>
+        float Fw { get { return Math.Max(1f, Math.Min(1.8f, Math.Min(w, h * 1.6f) / 1000f)); } }
+        float FwSize { get { return Math.Min(1.4f, Fw); } }
+
         float LaunchX() { return R(w * 0.06f, w * 0.94f); }
 
         void Schedule(float delay, Action a) { queue.Add(new Shot { At = time + delay, Do = a }); }
@@ -38,7 +42,7 @@ namespace Kerstlampjes
 
         void Rocket1(float x)
         {
-            ShootRocket(x, R(-30f, 30f) * d, -R(420f, 620f) * d, R(h * 0.15f, h * 0.5f), -1, -1f, 0);
+            ShootRocket(x, R(-30f, 30f) * d, -R(420f, 620f) * d * Fw, R(h * 0.15f, h * 0.5f), -1, -1f, 0);
         }
 
         void Mortars(float x)
@@ -46,7 +50,7 @@ namespace Kerstlampjes
             float hue = R(0f, 360f);
             for (int i = 0; i < 5; i++)
             {
-                float xx = x + R(-10f, 10f) * d, vx = R(-90f, 90f) * d, vy = -R(520f, 680f) * d, ty = R(h * 0.2f, h * 0.45f);
+                float xx = x + R(-10f, 10f) * d, vx = R(-90f, 90f) * d * Fw, vy = -R(520f, 680f) * d * Fw, ty = R(h * 0.2f, h * 0.45f);
                 int style = rnd.Next(5);
                 Schedule(i * 0.22f, () => ShootRocket(xx, vx, vy, ty, style, hue, 40));
             }
@@ -56,14 +60,14 @@ namespace Kerstlampjes
         {
             float hue = R(0f, 360f);
             for (int i = 0; i < 7; i++)
-                ShootRocket(x, (i - 3) * 50f * d, -R(540f, 580f) * d, R(h * 0.25f, h * 0.4f), 0, hue + i * 12f, 36);
+                ShootRocket(x, (i - 3) * 50f * d * Fw, -R(540f, 580f) * d * Fw, R(h * 0.25f, h * 0.4f), 0, hue + i * 12f, 36);
         }
 
         void Candle(float x, int dir)
         {
             for (int i = 0; i < 8; i++)
             {
-                float hue = i * 45f, vx = dir * R(40f, 90f) * d, vy = -R(380f, 460f) * d, ty = R(h * 0.35f, h * 0.6f);
+                float hue = i * 45f, vx = dir * R(40f, 90f) * d * Fw, vy = -R(380f, 460f) * d * Fw, ty = R(h * 0.35f, h * 0.6f);
                 Schedule(i * 0.2f, () => ShootRocket(x, vx, vy, ty, 0, hue, 14));
             }
         }
@@ -81,7 +85,7 @@ namespace Kerstlampjes
         void Finale(int rocketsCount)
         {
             for (int i = 0; i < rocketsCount; i++)
-                Schedule(R(0f, 3f), () => ShootRocket(LaunchX(), R(-40f, 40f) * d, -R(480f, 660f) * d, R(h * 0.15f, h * 0.5f), -1, -1f, 46));
+                Schedule(R(0f, 3f), () => ShootRocket(LaunchX(), R(-40f, 40f) * d, -R(480f, 660f) * d * Fw, R(h * 0.15f, h * 0.5f), -1, -1f, 46));
         }
 
         // ------------------------------------------------------------------ show en planning
@@ -174,14 +178,14 @@ namespace Kerstlampjes
                     if (sparks.Count > 900) continue;
                     if (e.Kind == 0)
                     {
-                        float a = -(float)Math.PI / 2f + R(-0.22f, 0.22f), sp = R(260f, 380f) * d;
+                        float a = -(float)Math.PI / 2f + R(-0.22f, 0.22f), sp = R(260f, 380f) * d * Fw;
                         sparks.Add(new Spark { X = e.X, Y = e.Y, VX = (float)Math.Cos(a) * sp, VY = (float)Math.Sin(a) * sp, Life = R(0.5f, 0.9f), Col = Hsv(R(30f, 55f), R(0.1f, 0.5f), 1f), Size = R(1.2f, 2.2f) * d, Grav = 520f * d });
                     }
                     else
                     {
                         for (int arm = 0; arm < 2; arm++)
                         {
-                            float a = e.Angle + arm * (float)Math.PI + R(-0.1f, 0.1f), sp = R(120f, 200f) * d;
+                            float a = e.Angle + arm * (float)Math.PI + R(-0.1f, 0.1f), sp = R(120f, 200f) * d * Fw;
                             sparks.Add(new Spark { X = e.X, Y = e.Y, VX = (float)Math.Cos(a) * sp, VY = (float)Math.Sin(a) * sp, Life = R(0.5f, 0.8f), Col = Hsv((e.Hue + e.Age * 70f) % 360f, 0.6f, 1f), Size = R(1.4f, 2.4f) * d, Grav = 120f * d });
                         }
                     }
@@ -203,8 +207,8 @@ namespace Kerstlampjes
                 case 2: // treurwilg: gouden vonken met luchtweerstand, vallen langzaam
                     for (int i = 0; i < (count > 0 ? count : 44); i++)
                     {
-                        float a = R(0f, 6.283f), sp = R(60f, 150f) * d;
-                        Add(x, y, (float)Math.Cos(a) * sp, (float)Math.Sin(a) * sp, R(2.2f, 3.2f), Hsv(R(36f, 46f), R(0.35f, 0.6f), 1f), R(1.4f, 2.4f) * d, 45f * d, 1.1f);
+                        float a = R(0f, 6.283f), sp = R(60f, 150f) * d * Fw;
+                        Add(x, y, (float)Math.Cos(a) * sp, (float)Math.Sin(a) * sp, R(2.2f, 3.2f), Hsv(R(36f, 46f), R(0.35f, 0.6f), 1f), R(1.4f, 2.4f) * d * FwSize, 45f * d, 1.1f);
                     }
                     break;
                 case 3: Ring(x, y, 30, 90f, hue, 1.1f, 1.8f, 0f); Ring(x, y, 34, 150f, hue + 180f, 1.1f, 1.8f, 0f); break;
@@ -213,14 +217,14 @@ namespace Kerstlampjes
                     {
                         float t = (float)(2 * Math.PI * i / 44);
                         float vx = 16f * (float)Math.Pow(Math.Sin(t), 3), vy = -(13f * (float)Math.Cos(t) - 5f * (float)Math.Cos(2 * t) - 2f * (float)Math.Cos(3 * t) - (float)Math.Cos(4 * t));
-                        Add(x, y, vx * 8f * d, vy * 8f * d, R(1.3f, 1.7f), Hsv((hue < 30f || hue > 330f) ? hue : 350f, 0.7f, 1f), R(1.8f, 2.8f) * d, 60f * d, 0f);
+                        Add(x, y, vx * 8f * d * Fw, vy * 8f * d * Fw, R(1.3f, 1.7f), Hsv((hue < 30f || hue > 330f) ? hue : 350f, 0.7f, 1f), R(1.8f, 2.8f) * d * FwSize, 60f * d, 0f);
                     }
                     break;
                 default:
                     for (int i = 0; i < (count > 0 ? count : 46); i++)
                     {
-                        float a = (float)(2 * Math.PI * i / (count > 0 ? count : 46)) + R(-0.05f, 0.05f), sp = R(50f, 170f) * d;
-                        Add(x, y, (float)Math.Cos(a) * sp, (float)Math.Sin(a) * sp, R(1.0f, 1.8f), Hsv((hue + R(-25f, 25f) + 360f) % 360f, R(0.45f, 0.9f), 1f), R(1.6f, 3.0f) * d, 85f * d, 0f);
+                        float a = (float)(2 * Math.PI * i / (count > 0 ? count : 46)) + R(-0.05f, 0.05f), sp = R(50f, 170f) * d * Fw;
+                        Add(x, y, (float)Math.Cos(a) * sp, (float)Math.Sin(a) * sp, R(1.0f, 1.8f), Hsv((hue + R(-25f, 25f) + 360f) % 360f, R(0.45f, 0.9f), 1f), R(1.6f, 3.0f) * d * FwSize, 85f * d, 0f);
                     }
                     break;
             }
@@ -231,7 +235,7 @@ namespace Kerstlampjes
             for (int i = 0; i < n; i++)
             {
                 float a = (float)(2 * Math.PI * i / n) + R(-0.04f, 0.04f);
-                Add(x, y, (float)Math.Cos(a) * speed * d, (float)Math.Sin(a) * speed * d, R(lifeMin, lifeMax), Hsv((hue % 360f + 360f) % 360f, R(0.5f, 0.9f), 1f), R(1.8f, 3f) * d, 85f * d, drag);
+                Add(x, y, (float)Math.Cos(a) * speed * d * Fw, (float)Math.Sin(a) * speed * d * Fw, R(lifeMin, lifeMax), Hsv((hue % 360f + 360f) % 360f, R(0.5f, 0.9f), 1f), R(1.8f, 3f) * d * FwSize, 85f * d, drag);
             }
         }
 

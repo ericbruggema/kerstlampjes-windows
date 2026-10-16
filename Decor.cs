@@ -503,7 +503,7 @@ namespace Kerstlampjes
 
             if (On(Decor.Pile))
             {
-                pileAcc += 14f * d * dt;
+                pileAcc += 0.3f * d * pile.Length * dt; // per kolom, zodat het op brede schermen even snel gaat
                 float maxH = 26f * d;
                 while (pileAcc > 0.25f * d)
                 {

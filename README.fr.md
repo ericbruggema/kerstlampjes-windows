@@ -8,7 +8,56 @@
 
 🌍 **Lire en :** [Nederlands](README.md) · [English](README.en.md) · [Deutsch](README.de.md) · **Français** · [Español](README.es.md) · [中文](README.zh.md)
 
+<img src="docs/hero.en.jpg" alt="Lumières de Noël et décorations autour du bord d'un bureau Windows 11" width="900">
+
 </div>
+
+---
+
+## 📸 Captures d'écran
+
+<sub>Les images sont simulées : le code de dessin de l'appli sur un faux bureau Windows 11, avec l'interface en anglais.</sub>
+
+<p align="center"><img src="docs/hero-startmenu.en.jpg" alt="Les lumières restent au bord, même quand le menu Démarrer est ouvert" width="800"><br><sub>Les lumières restent au bord, même quand le menu Démarrer est ouvert</sub></p>
+
+<table>
+<tr>
+<td align="center"><img src="docs/tray-menu.en.png" alt="Le menu dans la zone de notification" width="220"><br><sub>Le menu dans la zone de notification</sub></td>
+<td align="center"><img src="docs/settings-lights.en.png" alt="Paramètres : lumières" width="260"><br><sub>Paramètres : lumières</sub></td>
+<td align="center"><img src="docs/settings-decorations.en.png" alt="Paramètres : décorations" width="260"><br><sub>Paramètres : décorations</sub></td>
+</tr>
+</table>
+
+<p align="center"><img src="docs/train-top.png" alt="Train vu du dessus" width="720"><br><sub>Train vu du dessus</sub></p>
+
+<p align="center"><img src="docs/train-side.png" alt="Train vu de côté" width="720"><br><sub>Train vu de côté</sub></p>
+
+<p align="center"><img src="docs/garland.png" alt="Guirlande avec boules et lumières" width="600"><br><sub>Guirlande avec boules et lumières</sub></p>
+
+<p align="center"><img src="docs/icicles.png" alt="Glaçons" width="720"><br><sub>Glaçons</sub></p>
+
+<p align="center"><img src="docs/snow.png" alt="Neige qui s'accumule, pingouins et bonhomme de neige" width="860"><br><sub>Neige qui s'accumule, pingouins et bonhomme de neige</sub></p>
+
+<p align="center"><img src="docs/snow-fullscreen.jpg" alt="Neige sur tout l'écran" width="600"><br><sub>Neige sur tout l'écran</sub></p>
+
+<p align="center"><img src="docs/sleigh.png" alt="Traîneau avec rennes" width="860"><br><sub>Traîneau avec rennes</sub></p>
+
+<p align="center"><img src="docs/marquee.png" alt="Bandeau lumineux" width="860"><br><sub>Bandeau lumineux</sub></p>
+
+<p align="center"><img src="docs/palettes.png" alt="Palettes de couleurs" width="600"><br><sub>Palettes de couleurs</sub></p>
+
+<table>
+<tr>
+<td align="center"><img src="docs/fireworks-rockets.jpg" alt="Fusées" width="260"><br><sub>Fusées</sub></td>
+<td align="center"><img src="docs/fireworks-fountains.jpg" alt="Fontaines" width="260"><br><sub>Fontaines</sub></td>
+<td align="center"><img src="docs/fireworks-mortars.jpg" alt="Mortiers" width="260"><br><sub>Mortiers</sub></td>
+</tr>
+<tr>
+<td align="center"><img src="docs/fireworks-candles.jpg" alt="Chandelles romaines" width="260"><br><sub>Chandelles romaines</sub></td>
+<td align="center"><img src="docs/fireworks-wheels.jpg" alt="Soleils" width="260"><br><sub>Soleils</sub></td>
+<td align="center"><img src="docs/fireworks-grand.jpg" alt="Grand spectacle" width="260"><br><sub>Grand spectacle</sub></td>
+</tr>
+</table>
 
 ---
 

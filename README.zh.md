@@ -8,7 +8,56 @@
 
 🌍 **其他语言版本：** [Nederlands](README.md) · [English](README.en.md) · [Deutsch](README.de.md) · [Français](README.fr.md) · [Español](README.es.md) · **中文**
 
+<img src="docs/hero.en.jpg" alt="Windows 11 桌面边缘的圣诞彩灯和装饰" width="900">
+
 </div>
+
+---
+
+## 📸 截图
+
+<sub>图片是模拟的：用应用自己的绘制代码画在仿制的 Windows 11 桌面上，界面为英文。</sub>
+
+<p align="center"><img src="docs/hero-startmenu.en.jpg" alt="打开开始菜单时，彩灯仍留在边缘" width="800"><br><sub>打开开始菜单时，彩灯仍留在边缘</sub></p>
+
+<table>
+<tr>
+<td align="center"><img src="docs/tray-menu.en.png" alt="系统托盘中的菜单" width="220"><br><sub>系统托盘中的菜单</sub></td>
+<td align="center"><img src="docs/settings-lights.en.png" alt="设置：彩灯" width="260"><br><sub>设置：彩灯</sub></td>
+<td align="center"><img src="docs/settings-decorations.en.png" alt="设置：装饰" width="260"><br><sub>设置：装饰</sub></td>
+</tr>
+</table>
+
+<p align="center"><img src="docs/train-top.png" alt="俯视的火车" width="720"><br><sub>俯视的火车</sub></p>
+
+<p align="center"><img src="docs/train-side.png" alt="侧视的火车" width="720"><br><sub>侧视的火车</sub></p>
+
+<p align="center"><img src="docs/garland.png" alt="带彩球和彩灯的花环" width="600"><br><sub>带彩球和彩灯的花环</sub></p>
+
+<p align="center"><img src="docs/icicles.png" alt="冰柱" width="720"><br><sub>冰柱</sub></p>
+
+<p align="center"><img src="docs/snow.png" alt="积雪、企鹅和雪人" width="860"><br><sub>积雪、企鹅和雪人</sub></p>
+
+<p align="center"><img src="docs/snow-fullscreen.jpg" alt="雪花飘满整个屏幕" width="600"><br><sub>雪花飘满整个屏幕</sub></p>
+
+<p align="center"><img src="docs/sleigh.png" alt="驯鹿雪橇" width="860"><br><sub>驯鹿雪橇</sub></p>
+
+<p align="center"><img src="docs/marquee.png" alt="滚动字幕" width="860"><br><sub>滚动字幕</sub></p>
+
+<p align="center"><img src="docs/palettes.png" alt="颜色方案" width="600"><br><sub>颜色方案</sub></p>
+
+<table>
+<tr>
+<td align="center"><img src="docs/fireworks-rockets.jpg" alt="火箭" width="260"><br><sub>火箭</sub></td>
+<td align="center"><img src="docs/fireworks-fountains.jpg" alt="喷泉烟花" width="260"><br><sub>喷泉烟花</sub></td>
+<td align="center"><img src="docs/fireworks-mortars.jpg" alt="礼花弹" width="260"><br><sub>礼花弹</sub></td>
+</tr>
+<tr>
+<td align="center"><img src="docs/fireworks-candles.jpg" alt="罗马烟花筒" width="260"><br><sub>罗马烟花筒</sub></td>
+<td align="center"><img src="docs/fireworks-wheels.jpg" alt="旋转烟花" width="260"><br><sub>旋转烟花</sub></td>
+<td align="center"><img src="docs/fireworks-grand.jpg" alt="大型表演" width="260"><br><sub>大型表演</sub></td>
+</tr>
+</table>
 
 ---
 

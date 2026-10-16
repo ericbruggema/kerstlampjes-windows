@@ -8,7 +8,56 @@
 
 🌍 **Léelo en:** [Nederlands](README.md) · [English](README.en.md) · [Deutsch](README.de.md) · [Français](README.fr.md) · **Español** · [中文](README.zh.md)
 
+<img src="docs/hero.en.jpg" alt="Luces de Navidad y decoración alrededor del borde de un escritorio de Windows 11" width="900">
+
 </div>
+
+---
+
+## 📸 Capturas de pantalla
+
+<sub>Las imágenes son simuladas: el código de dibujo de la app sobre un escritorio de Windows 11 imitado, con la interfaz en inglés.</sub>
+
+<p align="center"><img src="docs/hero-startmenu.en.jpg" alt="Las luces siguen en el borde, también con el menú Inicio abierto" width="800"><br><sub>Las luces siguen en el borde, también con el menú Inicio abierto</sub></p>
+
+<table>
+<tr>
+<td align="center"><img src="docs/tray-menu.en.png" alt="El menú en la bandeja del sistema" width="220"><br><sub>El menú en la bandeja del sistema</sub></td>
+<td align="center"><img src="docs/settings-lights.en.png" alt="Ajustes: luces" width="260"><br><sub>Ajustes: luces</sub></td>
+<td align="center"><img src="docs/settings-decorations.en.png" alt="Ajustes: decoración" width="260"><br><sub>Ajustes: decoración</sub></td>
+</tr>
+</table>
+
+<p align="center"><img src="docs/train-top.png" alt="Tren visto desde arriba" width="720"><br><sub>Tren visto desde arriba</sub></p>
+
+<p align="center"><img src="docs/train-side.png" alt="Tren visto de lado" width="720"><br><sub>Tren visto de lado</sub></p>
+
+<p align="center"><img src="docs/garland.png" alt="Guirnalda con bolas y luces" width="600"><br><sub>Guirnalda con bolas y luces</sub></p>
+
+<p align="center"><img src="docs/icicles.png" alt="Carámbanos" width="720"><br><sub>Carámbanos</sub></p>
+
+<p align="center"><img src="docs/snow.png" alt="Nieve que se acumula, pingüinos y muñeco de nieve" width="860"><br><sub>Nieve que se acumula, pingüinos y muñeco de nieve</sub></p>
+
+<p align="center"><img src="docs/snow-fullscreen.jpg" alt="Nieve por toda la pantalla" width="600"><br><sub>Nieve por toda la pantalla</sub></p>
+
+<p align="center"><img src="docs/sleigh.png" alt="Trineo con renos" width="860"><br><sub>Trineo con renos</sub></p>
+
+<p align="center"><img src="docs/marquee.png" alt="Letrero luminoso" width="860"><br><sub>Letrero luminoso</sub></p>
+
+<p align="center"><img src="docs/palettes.png" alt="Paletas de colores" width="600"><br><sub>Paletas de colores</sub></p>
+
+<table>
+<tr>
+<td align="center"><img src="docs/fireworks-rockets.jpg" alt="Cohetes" width="260"><br><sub>Cohetes</sub></td>
+<td align="center"><img src="docs/fireworks-fountains.jpg" alt="Fuentes" width="260"><br><sub>Fuentes</sub></td>
+<td align="center"><img src="docs/fireworks-mortars.jpg" alt="Morteros" width="260"><br><sub>Morteros</sub></td>
+</tr>
+<tr>
+<td align="center"><img src="docs/fireworks-candles.jpg" alt="Velas romanas" width="260"><br><sub>Velas romanas</sub></td>
+<td align="center"><img src="docs/fireworks-wheels.jpg" alt="Ruedas de fuego" width="260"><br><sub>Ruedas de fuego</sub></td>
+<td align="center"><img src="docs/fireworks-grand.jpg" alt="Gran espectáculo" width="260"><br><sub>Gran espectáculo</sub></td>
+</tr>
+</table>
 
 ---
 

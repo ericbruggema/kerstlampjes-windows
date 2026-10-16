@@ -8,7 +8,56 @@
 
 🌍 **Lies dies in:** [Nederlands](README.md) · [English](README.en.md) · **Deutsch** · [Français](README.fr.md) · [Español](README.es.md) · [中文](README.zh.md)
 
+<img src="docs/hero.en.jpg" alt="Weihnachtslichter und Dekoration rund um den Rand eines Windows-11-Desktops" width="900">
+
 </div>
+
+---
+
+## 📸 Bilder
+
+<sub>Die Bilder sind simuliert: der Zeichencode der App auf einem nachgebauten Windows-11-Desktop, mit englischer Oberfläche.</sub>
+
+<p align="center"><img src="docs/hero-startmenu.en.jpg" alt="Die Lichter bleiben am Rand, auch bei geöffnetem Startmenü" width="800"><br><sub>Die Lichter bleiben am Rand, auch bei geöffnetem Startmenü</sub></p>
+
+<table>
+<tr>
+<td align="center"><img src="docs/tray-menu.en.png" alt="Das Menü im Infobereich" width="220"><br><sub>Das Menü im Infobereich</sub></td>
+<td align="center"><img src="docs/settings-lights.en.png" alt="Einstellungen: Lichter" width="260"><br><sub>Einstellungen: Lichter</sub></td>
+<td align="center"><img src="docs/settings-decorations.en.png" alt="Einstellungen: Dekoration" width="260"><br><sub>Einstellungen: Dekoration</sub></td>
+</tr>
+</table>
+
+<p align="center"><img src="docs/train-top.png" alt="Zug von oben" width="720"><br><sub>Zug von oben</sub></p>
+
+<p align="center"><img src="docs/train-side.png" alt="Zug von der Seite" width="720"><br><sub>Zug von der Seite</sub></p>
+
+<p align="center"><img src="docs/garland.png" alt="Girlande mit Kugeln und Lichtern" width="600"><br><sub>Girlande mit Kugeln und Lichtern</sub></p>
+
+<p align="center"><img src="docs/icicles.png" alt="Eiszapfen" width="720"><br><sub>Eiszapfen</sub></p>
+
+<p align="center"><img src="docs/snow.png" alt="Liegenbleibender Schnee, Pinguine und Schneemann" width="860"><br><sub>Liegenbleibender Schnee, Pinguine und Schneemann</sub></p>
+
+<p align="center"><img src="docs/snow-fullscreen.jpg" alt="Schnee über den ganzen Bildschirm" width="600"><br><sub>Schnee über den ganzen Bildschirm</sub></p>
+
+<p align="center"><img src="docs/sleigh.png" alt="Schlitten mit Rentieren" width="860"><br><sub>Schlitten mit Rentieren</sub></p>
+
+<p align="center"><img src="docs/marquee.png" alt="Laufschrift" width="860"><br><sub>Laufschrift</sub></p>
+
+<p align="center"><img src="docs/palettes.png" alt="Farbpaletten" width="600"><br><sub>Farbpaletten</sub></p>
+
+<table>
+<tr>
+<td align="center"><img src="docs/fireworks-rockets.jpg" alt="Raketen" width="260"><br><sub>Raketen</sub></td>
+<td align="center"><img src="docs/fireworks-fountains.jpg" alt="Fontänen" width="260"><br><sub>Fontänen</sub></td>
+<td align="center"><img src="docs/fireworks-mortars.jpg" alt="Mörser" width="260"><br><sub>Mörser</sub></td>
+</tr>
+<tr>
+<td align="center"><img src="docs/fireworks-candles.jpg" alt="Römische Lichter" width="260"><br><sub>Römische Lichter</sub></td>
+<td align="center"><img src="docs/fireworks-wheels.jpg" alt="Feuerräder" width="260"><br><sub>Feuerräder</sub></td>
+<td align="center"><img src="docs/fireworks-grand.jpg" alt="Große Show" width="260"><br><sub>Große Show</sub></td>
+</tr>
+</table>
 
 ---
 
