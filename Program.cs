@@ -29,14 +29,29 @@ namespace Kerstlampjes
         [STAThread]
         static void Main()
         {
+            // Tijdelijk testen naast een draaiende kopie (alleen voor ontwikkeling).
+            bool test = Environment.GetEnvironmentVariable("KL_TEST") == "1";
             bool first;
-            using (new Mutex(true, "Kerstlampjes.Windows.SingleInstance", out first))
+            var mutex = new Mutex(true, "Kerstlampjes.Windows.SingleInstance", out first);
+            var quit = new EventWaitHandle(false, EventResetMode.AutoReset, "Kerstlampjes.Windows.Quit");
+            if (!first && !test)
             {
-                if (!first) return; // draait al: het icoon staat in het systeemvak
-                Application.EnableVisualStyles();
-                Application.SetCompatibleTextRenderingDefault(false);
-                Application.Run(new TrayApp());
+                // Er draait al een kopie (bijvoorbeeld een oudere versie): vraag die netjes te stoppen en neem het over.
+                quit.Set();
+                try { first = mutex.WaitOne(4000); }
+                catch (AbandonedMutexException) { first = true; }
+                if (!first)
+                {
+                    // een oudere versie kan dit signaal nog niet verwerken
+                    MessageBox.Show(Tr.t("Kerstlampjes draait al. Sluit het eerst via het icoon in het systeemvak (rechtermuisknop, Afsluiten) en start het daarna opnieuw."),
+                        Tr.t("Kerstlampjes"), MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
             }
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new TrayApp(quit));
+            GC.KeepAlive(mutex);
         }
 
         /// <summary>Een klein lampje als icoon (aan = kleurig, uit = grijs).</summary>
@@ -89,8 +104,11 @@ namespace Kerstlampjes
         int lastX, lastDir, reversals;
         long wiggleStart;
 
-        public TrayApp()
+        readonly EventWaitHandle quitSignal;
+
+        public TrayApp(EventWaitHandle quit)
         {
+            quitSignal = quit;
             iconOn = Program.AppIcon(true);
             iconOff = Program.AppIcon(false);
 
@@ -130,6 +148,9 @@ namespace Kerstlampjes
             tray.Visible = true;
             UpdateTrayIcon();
 
+            // een nieuwe start van het programma vraagt deze kopie om te stoppen (zo vervangt een nieuwe versie de oude)
+            var waiter = new Thread(() => { try { if (quitSignal.WaitOne()) tray.ContextMenuStrip.BeginInvoke(new Action(ExitThread)); } catch { } }) { IsBackground = true };
+            waiter.Start();
             frame.Tick += delegate { Tick(); };
             slow.Tick += delegate { SlowTick(); };
             Microsoft.Win32.SystemEvents.DisplaySettingsChanged += delegate { rebuildPending = true; };

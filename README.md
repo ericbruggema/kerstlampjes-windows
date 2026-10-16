@@ -70,6 +70,8 @@ Het is de kleine broer van de [Android-app](https://github.com/ericbruggema/kers
 
 Wil je dat het vanzelf start? Vink **Starten met Windows** aan in het menu.
 
+**Bijwerken:** download de nieuwe `.exe` en start die. Vanaf versie 1.7 vervangt een nieuwe start de kopie die al draait. Draai je nog een oudere versie, sluit die dan eerst via het icoon in het systeemvak (rechtermuisknop → **Afsluiten**) en start daarna de nieuwe; de nieuwe zegt het ook als hij een oude kopie vindt.
+
 ---
 
 ## 🔔 Het icoon en het menu
@@ -335,7 +337,7 @@ Nee. Het venster is volledig doorklikbaar. Je kunt gewoon werken.
 Kijk in het systeemvak (het pijltje ^). De lampjes verbergen zichzelf als je een schermvullende app draait, en, als je *Alleen op het bureaublad* koos, zodra een programma voorop staat.
 
 **Ik zie het icoon niet.**
-Sleep het icoon uit het pijltje ^ naar de taakbalk. Is het er helemaal niet, start het programma dan opnieuw; een tweede start doet niets, omdat het al draait.
+Sleep het icoon uit het pijltje ^ naar de taakbalk. Is het er helemaal niet, start het programma dan opnieuw.
 
 **De lampjes dansen niet op mijn muziek.**
 Kies het effect **Op de muziek** en controleer de **Muziekbron**: *Geluid van de computer* volgt wat je computer afspeelt (YouTube, Spotify, ...). Heb je *Microfoon* gekozen, dan horen de lampjes alleen wat de microfoon opvangt, en dat is van je eigen luidsprekers nauwelijks iets. Controleer ook of het geluid niet gedempt of heel zacht staat: zonder geluid blijven de lampjes gedimd.

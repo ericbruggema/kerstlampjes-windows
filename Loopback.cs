@@ -39,6 +39,9 @@ namespace Kerstlampjes
         public static bool Running { get; private set; }
         /// <summary>Genormaliseerd volume, 0..1 (past zich aan het geluid aan).</summary>
         public static float Level;
+        /// <summary>Ruwe meterstand van Windows (voor diagnose).</summary>
+        public static float Peak;
+        public static string Status = "";
 
         static bool Acquire()
         {
@@ -89,6 +92,7 @@ namespace Kerstlampjes
                 try { if (meter.GetPeakValue(out v) != 0) { v = 0f; Release(); } }
                 catch { v = 0f; Release(); }
             }
+            Peak = v; Status = meter == null ? "geen apparaat" : "ok";
             envelope = Math.Max(Math.Max(v, 0.05f), envelope * 0.997f);
             float lv = Math.Max(0f, Math.Min(1f, (v - 0.01f) / (envelope - 0.01f)));
             Level = Math.Max(lv, Level * 0.8f);

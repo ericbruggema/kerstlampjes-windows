@@ -70,6 +70,8 @@ It is the small sibling of the [Android app](https://github.com/ericbruggema/ker
 
 To start it automatically, tick **Start with Windows** in the tray menu.
 
+**Updating:** download the new `.exe` and start it. From version 1.7 on, a new start replaces the copy that is already running. If you are still running an older version, first close it from the tray icon (right-click → **Exit**) and then start the new one; the new one tells you so when it finds an old copy running.
+
 ---
 
 ## 🔔 The tray icon and menu
@@ -335,7 +337,7 @@ No. The window is fully click-through. You can work as usual.
 Look in the system tray (the ^ arrow). The lights hide themselves when you run a full-screen app, and, if you chose *Only on the desktop*, when a program is in front.
 
 **I do not see the icon.**
-Drag the icon out of the ^ overflow onto the taskbar. If it is not there at all, start the program again; a second start does nothing, because it is already running.
+Drag the icon out of the ^ overflow onto the taskbar. If it is not there at all, start the program again.
 
 **The lights do not dance to my music.**
 Choose the effect **To the music** and check the **Music source**: *Sound from the computer* follows what your computer plays (YouTube, Spotify, ...). If you chose *Microphone*, the lights only hear what the microphone picks up, which is hardly anything of your own speakers. Also check that the sound is not muted or very low: with no sound the lights stay dim.
