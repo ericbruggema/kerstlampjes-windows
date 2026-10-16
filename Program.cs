@@ -14,7 +14,7 @@ namespace Kerstlampjes
 {
     static class Program
     {
-        public const string Repo = "ericbruggema/kerstlampjes";
+        public const string Repo = "ericbruggema/kerstlampjes-windows";
         public const string RepoUrl = "https://github.com/" + Repo;
 
         public static string Version
@@ -330,12 +330,12 @@ namespace Kerstlampjes
                     using (var r = req.GetResponse())
                     using (var sr = new System.IO.StreamReader(r.GetResponseStream()))
                         json = sr.ReadToEnd();
-                    // eerste release met tag "windows-vX.Y" (nieuwste staat bovenaan)
-                    var m = Regex.Match(json, "\"tag_name\"\\s*:\\s*\"windows-v([0-9.]+)\"");
+                    // nieuwste release (tag "vX.Y") staat bovenaan
+                    var m = Regex.Match(json, "\"tag_name\"\\s*:\\s*\"v([0-9.]+)\"");
                     if (m.Success)
                     {
                         latest = m.Groups[1].Value;
-                        page = Program.RepoUrl + "/releases/tag/windows-v" + latest;
+                        page = Program.RepoUrl + "/releases/tag/v" + latest;
                     }
                 }
                 catch { }
