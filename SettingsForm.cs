@@ -60,10 +60,10 @@ namespace Kerstlampjes
             sag = Slider(t1, "Doorhang van de draad", 0, 20);
             opacity = Slider(t1, "Doorzichtigheid", 30, 100);
             showLights = AddCheck(t1, Tr.t("Lampjes tonen"));
-            sideTop = AddCheck(t1, Tr.t("Lampjes boven"));
-            sideBottom = AddCheck(t1, Tr.t("Lampjes onder"));
-            sideLeft = AddCheck(t1, Tr.t("Lampjes links"));
-            sideRight = AddCheck(t1, Tr.t("Lampjes rechts"));
+            var sideRow = new FlowLayoutPanel { AutoSize = true, WrapContents = true, Margin = new Padding(0) };
+            Func<string, CheckBox> sideBox = txt => { var c = new CheckBox { Text = Tr.t(txt), AutoSize = true, Margin = new Padding(3, 2, 8, 2) }; sideRow.Controls.Add(c); return c; };
+            sideTop = sideBox("Boven"); sideBottom = sideBox("Onder"); sideLeft = sideBox("Links"); sideRight = sideBox("Rechts");
+            AddRow(t1, "Lampjes langs", sideRow);
             allScreens = AddCheck(t1, Tr.t("Op alle schermen"));
             desktopOnly = AddCheck(t1, Tr.t("Alleen op het bureaublad (niet boven programma's)"));
             hideFull = AddCheck(t1, Tr.t("Verbergen bij schermvullende apps (spellen, films)"));
@@ -87,7 +87,7 @@ namespace Kerstlampjes
             sound = AddCheck(t2, Tr.t("Geluid"));
 
             var tabs = new TabControl { Dock = DockStyle.Fill };
-            var p1 = new TabPage(Tr.t("Lampjes")) { Padding = new Padding(8) };
+            var p1 = new TabPage(Tr.t("Lampjes")) { Padding = new Padding(8), AutoScroll = true };
             var p2 = new TabPage(Tr.t("Versiering")) { Padding = new Padding(8), AutoScroll = true };
             p1.Controls.Add(t1); p2.Controls.Add(t2);
             tabs.TabPages.Add(p1); tabs.TabPages.Add(p2);
@@ -110,7 +110,7 @@ namespace Kerstlampjes
             int pageH = Math.Max(t1.PreferredSize.Height, t2.PreferredSize.Height);
             int pageW = Math.Max(t1.PreferredSize.Width, t2.PreferredSize.Width);
             ClientSize = new Size(pageW + 16 + Padding.Horizontal + 8,
-                Math.Min(pageH, Screen.PrimaryScreen.WorkingArea.Height - 260) + 48 + buttons.PreferredSize.Height + Padding.Vertical);
+                Math.Min(pageH, Screen.PrimaryScreen.WorkingArea.Height - 120) + 48 + buttons.PreferredSize.Height + Padding.Vertical);
             LoadValues();
             UpdateEnabled();
 
