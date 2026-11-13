@@ -20,6 +20,7 @@ namespace Kerstlampjes
         int count;
         float[] px = new float[0], py = new float[0], ang = new float[0], phase = new float[0], freq = new float[0];
         int[] colorIdx = new int[0];
+        bool[] hidden = new bool[0];   // lampjes aan een zijde die uit staat
 
         GraphicsPath wire, glass;
         float glassCenterY, glowRadius, size;
@@ -56,7 +57,7 @@ namespace Kerstlampjes
             float step = len / count;
 
             px = new float[count]; py = new float[count]; ang = new float[count];
-            colorIdx = new int[count]; phase = new float[count]; freq = new float[count];
+            colorIdx = new int[count]; hidden = new bool[count]; phase = new float[count]; freq = new float[count];
             var palette = Palettes.Colors[s.Palette];
             var rnd = new Random(42);
             for (int i = 0; i < count; i++)
@@ -67,6 +68,13 @@ namespace Kerstlampjes
                 float nx = -ty, ny = tx;
                 ang[i] = (float)(Math.Atan2(ny, nx) * 180.0 / Math.PI) - 90f;
                 colorIdx[i] = i % palette.Length;
+                // aan welke zijde zit dit lampje? (bij de hoeken: de dichtstbijzijnde zijde)
+                float dT = y - y0, dR = x1 - x, dB = y1 - y, dL = x - x0;
+                int side = 1; float best = dT;
+                if (dR < best) { side = 2; best = dR; }
+                if (dB < best) { side = 4; best = dB; }
+                if (dL < best) { side = 8; }
+                hidden[i] = (s.Sides & side) == 0;
                 phase[i] = (float)(rnd.NextDouble() * 2 * Math.PI);
                 freq[i] = 0.35f + (float)rnd.NextDouble() * 0.9f;
             }
@@ -79,6 +87,7 @@ namespace Kerstlampjes
                 PointTan(i * step + step / 2f, x0, y0, x1, y1, r, out mx, out my, out tx, out ty);
                 float cx = mx + (-ty) * sag * 2f, cy = my + tx * sag * 2f;
                 int j = (i + 1) % count;
+                if (hidden[i] || hidden[j]) continue;
                 float ax = px[i], ay = py[i], bx = px[j], by = py[j];
                 wire.AddBezier(ax, ay,
                     ax + 2f / 3f * (cx - ax), ay + 2f / 3f * (cy - ay),
@@ -348,6 +357,7 @@ namespace Kerstlampjes
 
             for (int i = 0; i < count; i++)
             {
+                if (hidden[i]) continue;
                 int ci = (colorIdx[i] + waveShift) % palette.Length;
                 int level = Math.Max(0, Math.Min(Levels - 1, (int)Math.Round(Intensity(i, t) * (Levels - 1))));
                 int bucket = ((int)Math.Round(ang[i] / AngleStep) % buckets + buckets) % buckets;

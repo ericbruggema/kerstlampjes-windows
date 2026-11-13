@@ -19,6 +19,7 @@ namespace Kerstlampjes
         TrackBar speed, size, spacing, corner, inset, sag, opacity, wagons;
         CheckBox autoFire, snowFull, desktopOnly, allScreens, hideFull, autostart, showLights, trainLights, garlandBalls, sound;
         CheckBox[] decor;
+        CheckBox sideTop, sideRight, sideBottom, sideLeft;
         TextBox marquee;
 
         public SettingsForm(Settings settings, Action changed, Func<bool> getAutostart, Action<bool> setAutostart)
@@ -59,6 +60,10 @@ namespace Kerstlampjes
             sag = Slider(t1, "Doorhang van de draad", 0, 20);
             opacity = Slider(t1, "Doorzichtigheid", 30, 100);
             showLights = AddCheck(t1, Tr.t("Lampjes tonen"));
+            sideTop = AddCheck(t1, Tr.t("Lampjes boven"));
+            sideBottom = AddCheck(t1, Tr.t("Lampjes onder"));
+            sideLeft = AddCheck(t1, Tr.t("Lampjes links"));
+            sideRight = AddCheck(t1, Tr.t("Lampjes rechts"));
             allScreens = AddCheck(t1, Tr.t("Op alle schermen"));
             desktopOnly = AddCheck(t1, Tr.t("Alleen op het bureaublad (niet boven programma's)"));
             hideFull = AddCheck(t1, Tr.t("Verbergen bij schermvullende apps (spellen, films)"));
@@ -111,7 +116,7 @@ namespace Kerstlampjes
 
             EventHandler commit = delegate { Commit(); };
             mode.SelectedIndexChanged += commit; mode.SelectedIndexChanged += delegate { UpdateEnabled(); }; musicSource.SelectedIndexChanged += commit; bulbStyle.SelectedIndexChanged += commit; fireShow.SelectedIndexChanged += commit; palette.SelectedIndexChanged += commit; trainView.SelectedIndexChanged += commit;
-            foreach (var c in new[] { autoFire, snowFull, desktopOnly, allScreens, hideFull, showLights, trainLights, garlandBalls, sound }) c.CheckedChanged += commit;
+            foreach (var c in new[] { sideTop, sideRight, sideBottom, sideLeft, autoFire, snowFull, desktopOnly, allScreens, hideFull, showLights, trainLights, garlandBalls, sound }) c.CheckedChanged += commit;
             foreach (var c in decor) c.CheckedChanged += commit;
             marquee.TextChanged += commit;
             foreach (var c in decor) c.CheckedChanged += delegate { UpdateEnabled(); };
@@ -181,6 +186,7 @@ namespace Kerstlampjes
             speed.Value = s.Speed; size.Value = s.Size; spacing.Value = s.Spacing; corner.Value = s.Corner;
             inset.Value = s.Inset; sag.Value = s.Sag; opacity.Value = s.Opacity;
             allScreens.Checked = s.AllScreens; hideFull.Checked = s.HideFullscreen; showLights.Checked = s.ShowLights; desktopOnly.Checked = s.DesktopOnly;
+            sideTop.Checked = (s.Sides & 1) != 0; sideRight.Checked = (s.Sides & 2) != 0; sideBottom.Checked = (s.Sides & 4) != 0; sideLeft.Checked = (s.Sides & 8) != 0;
             autostart.Checked = getAutostart();
             for (int i = 0; i < decor.Length; i++) decor[i].Checked = (s.DecorMask & Decor.Flags[i]) != 0;
             fireShow.SelectedIndex = Math.Max(0, Math.Min(FireShows.Names.Length - 1, s.FireShow));
@@ -216,6 +222,7 @@ namespace Kerstlampjes
             s.Speed = speed.Value; s.Size = size.Value; s.Spacing = spacing.Value; s.Corner = corner.Value;
             s.Inset = inset.Value; s.Sag = sag.Value; s.Opacity = opacity.Value;
             s.AllScreens = allScreens.Checked; s.HideFullscreen = hideFull.Checked; s.ShowLights = showLights.Checked; s.DesktopOnly = desktopOnly.Checked;
+            s.Sides = (sideTop.Checked ? 1 : 0) | (sideRight.Checked ? 2 : 0) | (sideBottom.Checked ? 4 : 0) | (sideLeft.Checked ? 8 : 0);
             int mask = 0;
             for (int i = 0; i < decor.Length; i++) if (decor[i].Checked) mask |= Decor.Flags[i];
             s.DecorMask = mask;
@@ -232,7 +239,7 @@ namespace Kerstlampjes
             var d = new Settings();
             s.Mode = d.Mode; s.Palette = d.Palette; s.MusicSource = d.MusicSource; s.AutoFireworks = d.AutoFireworks; s.BulbStyle = d.BulbStyle; s.Speed = d.Speed; s.Size = d.Size; s.Spacing = d.Spacing;
             s.Corner = d.Corner; s.Inset = d.Inset; s.Sag = d.Sag; s.Opacity = d.Opacity;
-            s.AllScreens = d.AllScreens; s.HideFullscreen = d.HideFullscreen; s.ShowLights = d.ShowLights; s.DesktopOnly = d.DesktopOnly;
+            s.AllScreens = d.AllScreens; s.HideFullscreen = d.HideFullscreen; s.ShowLights = d.ShowLights; s.DesktopOnly = d.DesktopOnly; s.Sides = d.Sides;
             s.DecorMask = d.DecorMask; s.TrainSide = d.TrainSide; s.TrainWagons = d.TrainWagons;
             s.FireShow = d.FireShow; s.SnowFull = d.SnowFull; s.TrainLights = d.TrainLights; s.GarlandBalls = d.GarlandBalls; s.Sound = d.Sound; s.Marquee = d.Marquee;
             LoadValues();

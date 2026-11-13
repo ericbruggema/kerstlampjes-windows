@@ -128,6 +128,7 @@ Elke wijziging werkt meteen door en wordt bewaard. Er zijn twee tabbladen.
 | **Doorhang van de draad** | Hoeveel de draad tussen de lampjes doorhangt (0–20) |
 | **Doorzichtigheid** | 30–100 %, maakt alles doorzichtiger |
 | **Lampjes tonen** | Zet het snoer uit als je alleen de versiering wilt |
+| **Lampjes boven / onder / links / rechts** | Kies zelf langs welke randen het snoer hangt, bijvoorbeeld alleen onderaan |
 | **Alleen op het bureaublad (niet boven programma's)** | Verbergt alles zolang een ander programma voorop staat |
 | **Op alle schermen** | Eén snoer per monitor, of alleen op het hoofdscherm |
 | **Verbergen bij schermvullende apps (spellen, films)** | Verbergt zichzelf automatisch; staat standaard aan |

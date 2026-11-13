@@ -25,6 +25,7 @@ namespace Kerstlampjes
         public bool TrainLights = true;
         public bool GarlandBalls = true;
         public bool ShowLights = true;
+        public int Sides = 15;              // zijden met lampjes: 1 boven, 2 rechts, 4 onder, 8 links
         public bool Sound = false;
         public bool SnowFull = false;       // sneeuw over het hele scherm (anders alleen aan de zijkanten)
         public int BulbStyle = 0;           // soort lampjes, zie BulbStyles
@@ -81,6 +82,7 @@ namespace Kerstlampjes
                         case "wagons": s.TrainWagons = Clamp(v, 1, 8, s.TrainWagons); break;
                         case "trainlights": s.TrainLights = v != "0"; break;
                         case "garlandballs": s.GarlandBalls = v != "0"; break;
+                        case "sides": s.Sides = Clamp(v, 0, 15, s.Sides); break;
                         case "showlights": s.ShowLights = v != "0"; break;
                         case "sound": s.Sound = v == "1"; break;
                         case "desktoponly": s.DesktopOnly = v == "1"; break;
@@ -109,7 +111,7 @@ namespace Kerstlampjes
                     "sag=" + Sag, "on=" + (On ? 1 : 0), "allscreens=" + (AllScreens ? 1 : 0),
                     "hidefullscreen=" + (HideFullscreen ? 1 : 0), "decor=" + DecorMask,
                     "trainside=" + (TrainSide ? 1 : 0), "wagons=" + TrainWagons, "trainlights=" + (TrainLights ? 1 : 0),
-                    "garlandballs=" + (GarlandBalls ? 1 : 0), "showlights=" + (ShowLights ? 1 : 0),
+                    "garlandballs=" + (GarlandBalls ? 1 : 0), "showlights=" + (ShowLights ? 1 : 0), "sides=" + Sides,
                     "sound=" + (Sound ? 1 : 0), "desktoponly=" + (DesktopOnly ? 1 : 0), "fireshow=" + FireShow, "autofire=" + (AutoFireworks ? 1 : 0), "musicsource=" + MusicSource, "bulbstyle=" + BulbStyle, "snowfull=" + (SnowFull ? 1 : 0), "marquee=" + (Marquee ?? "").Replace('\r', ' ').Replace('\n', ' ')
                 });
             }

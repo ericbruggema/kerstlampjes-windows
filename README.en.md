@@ -128,6 +128,7 @@ Every change takes effect immediately and is saved. There are two tabs.
 | **Sag of the wire** | How much the wire hangs between the bulbs (0–20) |
 | **Opacity** | 30–100 %, makes everything more transparent |
 | **Show lights** | Switch the string of lights off if you only want the decorations |
+| **Lights on top / bottom / left / right** | Choose which edges carry the string of lights, for example only the bottom |
 | **Only on the desktop (not over programs)** | Hides everything while another program is in front |
 | **On all screens** | One string per monitor, or only on the main screen |
 | **Hide during full-screen apps (games, films)** | Hides itself automatically; on by default |
